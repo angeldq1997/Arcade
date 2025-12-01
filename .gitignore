@@ -3,8 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-misc.xml
-vcs.xml
+.idea/misc.xml
+.idea/vcs.xml
 
 ### IntelliJ IDEA ###
 .idea/
