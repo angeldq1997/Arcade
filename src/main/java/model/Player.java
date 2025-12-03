@@ -15,7 +15,7 @@ public class Player {
 
     public Player(){
         this.name = "Unknown";
-        this.id = "000";
+        this.id = "No ID";
         this.disponibleCredits = 0;
         this.playedGames = 0;
     }
@@ -54,6 +54,36 @@ public class Player {
 
     @Override
     public String toString() {
-        return "";
+        return "Jugador " +
+                "nombre = " + this.name +
+                ", ID = " + this.id +
+                ", créditos disponibles = " + this.disponibleCredits +
+                ", partidas jugadas = " + this.playedGames;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean isEquals = false;
+        if(this==obj) {
+            isEquals = true;
+            // la segunda parte se podría hacer también con getclass en vez de instanceof
+        }else if(obj!=null && obj instanceof Player){
+            Player anotherPlayer = (Player) obj;
+            if(this.id.equals(anotherPlayer.getId())){
+                isEquals = true;
+            }
+        }
+        return isEquals;
+    }
+
+    /**
+     * Función para recargar créditos al jugador.
+     */
+    public void rechargeCredits(int creditsToRecharge){
+        this.disponibleCredits+=creditsToRecharge;
+    }
+
+    public void incrementTimesArcadePlayed(){
+        this.playedGames++;
     }
 }

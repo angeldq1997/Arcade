@@ -10,7 +10,7 @@ public class ArcadeMachine {
     private int pricePerPlay;
     private boolean activated;
     private int timesPlayed;
-    private int[] rankingPoints;
+    private int[] rankingScore;
     private Player[] bestPlayers;
 
     public ArcadeMachine(String name, String genre, int pricePerPlay) {
@@ -19,7 +19,7 @@ public class ArcadeMachine {
         this.pricePerPlay = pricePerPlay;
         this.activated = true;
         this.timesPlayed = 0;
-        this.rankingPoints = new int[]{0, 0, 0};
+        this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
     }
 
@@ -29,7 +29,7 @@ public class ArcadeMachine {
         this.pricePerPlay = 0;
         this.activated = false;
         this.timesPlayed = 0;
-        this.rankingPoints = new int[]{0, 0, 0};
+        this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
     }
 
@@ -69,8 +69,8 @@ public class ArcadeMachine {
         return this.timesPlayed;
     }
 
-    public int[] getRankingPoints() {
-        return this.rankingPoints;
+    public int[] getRankingScore() {
+        return this.rankingScore;
     }
 
     public Player[] getBestPlayers() {
@@ -113,7 +113,7 @@ public class ArcadeMachine {
                 ", precio para jugar = " + pricePerPlay +
                 ", está activa = " + activated +
                 ", veces que se ha jugado = " + timesPlayed +
-                ", mejores puntuaciones = " + Arrays.toString(rankingPoints) +
+                ", mejores puntuaciones = " + Arrays.toString(rankingScore) +
                 ", mejores jugadores = " + Arrays.toString(bestPlayers) +".";
     }
 
@@ -133,8 +133,11 @@ public class ArcadeMachine {
     }
 
 
-    public void playMachine(){
-        int score = Utils.genRandomNumber(9999);
+
+    public void playMachine() throws Exception {
+        final int MAXSCORE = 9999;
+        int score = Utils.genRandomNumber(MAXSCORE);
+        addPlay();
 
     }
 }
