@@ -86,4 +86,12 @@ public class Player {
     public void incrementTimesArcadePlayed(){
         this.playedGames++;
     }
+
+    public void spendCredits(int costArcadeMachine) throws Exception {
+        if(this.disponibleCredits>=costArcadeMachine){
+            disponibleCredits=-costArcadeMachine;
+        }else{
+            throw new Exception("No tiene suficientes créditos para jugar.");
+        }
+    }
 }
