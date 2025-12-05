@@ -24,4 +24,23 @@ public class ArcadeRoom {
         }
         return foundPlayer;
     }
+
+    private int findMachine(ArcadeMachine machineToFind){
+        boolean foundMachine = false;
+        int machinePosition = 0;
+        for (int i = 0; i < this.arcadeMachines.length && !foundMachine; i++) {
+            if(this.arcadeMachines[i].equals(machineToFind)){
+                foundMachine=true;
+                machinePosition = i;
+            }
+        }
+        return machinePosition;
+    }
+
+    public void removeMachine(ArcadeMachine machineToRemove){
+        ArcadeMachine auxMachine = new ArcadeMachine();
+        int position = findMachine(machineToRemove);
+        this.arcadeMachines[position] = null;
+    }
+
 }

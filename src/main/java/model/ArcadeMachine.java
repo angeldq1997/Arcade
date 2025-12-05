@@ -3,6 +3,7 @@ package model;
 import utils.Utils;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ArcadeMachine {
     private String name;
@@ -86,23 +87,35 @@ public class ArcadeMachine {
      * Función que modifica la activación de la máquina si ya estaba en el mismo estado seleccionado, lanza excepción.
      * @throws Exception Excepción lanzada en caso de que se seleccione la misma opción de estado de la máquina.
      */
-    public void modifyActivationMachine(String activation) throws Exception {
-        switch (activation.toLowerCase()) {
-            case "off":
-                if (this.activated) {
-                    this.activated = false;
-                } else {
-                    throw new Exception("La máquina no puede desactivarse ya está desactivada.");
-                }
-                break;
-            case "on":
-                if (!this.activated) {
+    public void modifyActivationMachine(boolean state) throws Exception {
+        if(state) {
+            if (this.activated) {
+                this.activated = false;
+            } else {
+                throw new Exception("La máquina no puede desactivarse ya está desactivada.");
+            }
+        }else{
+            if (!this.activated) {
                     this.activated = true;
                 } else {
                     throw new Exception("La máquina no puede activarse ya está activada.");
                 }
-                break;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean isEquals = false;
+        if(this==obj) {
+            isEquals = true;
+            // la segunda parte se podría hacer también con getclass en vez de instanceof
+        }else if(obj!=null && obj instanceof ArcadeMachine){
+            ArcadeMachine anotherMachine = (ArcadeMachine) obj;
+            if(this.name.equals(anotherMachine.getName())){
+                isEquals = true;
+            }
+        }
+        return isEquals;
     }
 
     @Override
@@ -125,19 +138,45 @@ public class ArcadeMachine {
         if(this.activated) {
             this.timesPlayed++;
             if ((this.timesPlayed) % 100 == 0) {
-                modifyActivationMachine("off");
+                modifyActivationMachine(false);
             }
         }else{
             throw new Exception("No se puede añadir al número de veces jugadas estando apagada la máquina.");
         }
     }
 
+    public boolean storeScore(Player challenger, int score){
+        boolean foundScore = false;
+        Player aux = new Player();
+        for (int i = 0; i < 3; i++) {
+            if(!foundScore && score > rankingScore[0]){
+                score = rankingScore[0];
+                foundScore = true;
 
+            }else if (!foundScore && score > rankingScore [1] ){
+                rankingScore[1] = rankingScore[2];
+                this.bestPlayers[1] = this.bestPlayers[2];
+                score = rankingScore[1];
+                this.bestPlayers[1] = challenger;
+                foundScore = true;
+
+            }else if (!foundScore && score > rankingScore [2]){
+                score = rankingScore[2];
+                foundScore = true;
+            }
+        }
+        return foundScore;
+    }
 
     public void playMachine() throws Exception {
         final int MAXSCORE = 9999;
         int score = Utils.genRandomNumber(MAXSCORE);
-        addPlay();
+        try{
+            this.addPlay();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
 }

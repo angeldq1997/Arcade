@@ -1,5 +1,7 @@
 package utils;
 
+import model.Player;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -75,14 +77,14 @@ public class Utils {
         return randomNumber;
     }
 
-    public static boolean verifyString(String stringToCheck, String stringInputted){
-        return stringToCheck.equalsIgnoreCase(stringInputted);
+    public int[] moveValues(int[] array, int position){
+        int[] copy = new int[array.length];
+        if(position > array.length){
+
+        }
+        for (int i = position; i < array.length; i++) {
+
+        }
+        return copy;
     }
-
-    public static void writeString(){
-        Scanner keyboard = new Scanner(System.in);
-        keyboard.nextLine();
-    }
-
-
 }

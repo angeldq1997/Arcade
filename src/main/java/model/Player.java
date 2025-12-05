@@ -83,15 +83,26 @@ public class Player {
         this.disponibleCredits+=creditsToRecharge;
     }
 
+    /**
+     * Función para incrementar número de partidas jugadas.
+     */
     public void incrementTimesArcadePlayed(){
         this.playedGames++;
     }
 
-    public void spendCredits(int costArcadeMachine) throws Exception {
+    /**
+     * Función que gasta créditos para jugar una partida
+     * @param costArcadeMachine
+     * @throws Exception
+     */
+    public boolean spendCredits(int costArcadeMachine) throws Exception {
+        boolean canPay = false;
         if(this.disponibleCredits>=costArcadeMachine){
-            disponibleCredits=-costArcadeMachine;
+            disponibleCredits-=costArcadeMachine;
+            canPay = true;
         }else{
             throw new Exception("No tiene suficientes créditos para jugar.");
         }
+        return canPay;
     }
 }

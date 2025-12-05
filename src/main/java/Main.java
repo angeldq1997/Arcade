@@ -14,5 +14,7 @@ public class Main{
             throw new RuntimeException(e);
         }
         System.out.println(arcadeMachine1.IsActivated());
+
+        arcadeMachine1.storeScore(Player antonio, 700)
     }
 }
