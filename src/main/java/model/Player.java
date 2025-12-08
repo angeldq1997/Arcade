@@ -6,11 +6,11 @@ public class Player {
     private int disponibleCredits;
     private int playedGames;
 
-    public Player(String name, String id, int disponibleCredits, int playedGames){
+    public Player(String name, String id, int disponibleCredits){
         this.name = name;
         this.id = id;
         this.disponibleCredits = disponibleCredits;
-        this.playedGames = playedGames;
+        this.playedGames = 0;
     }
 
     public Player(){

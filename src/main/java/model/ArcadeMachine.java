@@ -21,7 +21,7 @@ public class ArcadeMachine {
         this.activated = true;
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = null;
+        this.bestPlayers = new Player[3];
     }
 
     public ArcadeMachine(){
@@ -82,6 +82,10 @@ public class ArcadeMachine {
     public void setTimesPlayed(int timesPlayed){
         this.timesPlayed=timesPlayed;
     }
+    //TEMPORAL BORRALO LUEGO BURRO!!!!!!
+    public void setRankingScore(int[] rankingScore) {
+        this.rankingScore = rankingScore;
+    }
 
     /**
      * Función que modifica la activación de la máquina si ya estaba en el mismo estado seleccionado, lanza excepción.
@@ -120,14 +124,13 @@ public class ArcadeMachine {
 
     @Override
     public String toString() {
-        return "ArcadeMachine{" +
-                "Nombre = " + name + "\n" +
-                ", género = " + genre + '\'' +
+        return  name +
+                ", género = " + genre +
                 ", precio para jugar = " + pricePerPlay +
                 ", está activa = " + activated +
                 ", veces que se ha jugado = " + timesPlayed +
                 ", mejores puntuaciones = " + Arrays.toString(rankingScore) +
-                ", mejores jugadores = " + Arrays.toString(bestPlayers) +".";
+                ", mejores jugadores = " + //todo añadir mejores +".";
     }
 
     /**
@@ -147,28 +150,31 @@ public class ArcadeMachine {
 
     public boolean storeScore(Player challenger, int score){
         boolean foundScore = false;
-        Player aux = new Player();
-        for (int i = 0; i < 3; i++) {
-            if(!foundScore && score > rankingScore[0]){
+        Player temporalPlayer = new Player();
+        int temporalScore = 0;
+        for (int i = 0; i < this.rankingScore.length; i++) {
+            if (!foundScore && score > rankingScore[0]) {
                 score = rankingScore[0];
                 foundScore = true;
 
-            }else if (!foundScore && score > rankingScore [1] ){
-                rankingScore[1] = rankingScore[2];
-                this.bestPlayers[1] = this.bestPlayers[2];
-                score = rankingScore[1];
-                this.bestPlayers[1] = challenger;
-                foundScore = true;
-
-            }else if (!foundScore && score > rankingScore [2]){
-                score = rankingScore[2];
+            } else if (!foundScore && score > rankingScore[i]) {
+                temporalScore = rankingScore[i];
+                temporalPlayer = this.bestPlayers[i];
+                score = rankingScore[i];
+                this.bestPlayers[i] = challenger;
                 foundScore = true;
             }
         }
         return foundScore;
     }
 
-    public void playMachine() throws Exception {
+    public void showBestPlayers(){
+        for (int i = 0; i < this.bestPlayers.length; i++) {
+            this.bestPlayers[i].getName();
+        }
+    }
+
+    public void playMachine(){
         final int MAXSCORE = 9999;
         int score = Utils.genRandomNumber(MAXSCORE);
         try{
@@ -176,7 +182,5 @@ public class ArcadeMachine {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 }

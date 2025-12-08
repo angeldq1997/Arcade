@@ -1,4 +1,5 @@
 import model.ArcadeMachine;
+import model.Player;
 import utils.Utils;
 
 public class Main{
@@ -15,6 +16,12 @@ public class Main{
         }
         System.out.println(arcadeMachine1.IsActivated());
 
-        arcadeMachine1.storeScore(Player antonio, 700)
+        Player antonio = new Player("Antonio", "1", 100);
+
+        int[] score = {1000, 600, 500};
+        arcadeMachine1.setRankingScore(score);
+        arcadeMachine1.storeScore(antonio, 700);
+
+        System.out.println(arcadeMachine1);
     }
 }

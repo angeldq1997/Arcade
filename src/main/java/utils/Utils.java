@@ -77,14 +77,9 @@ public class Utils {
         return randomNumber;
     }
 
-    public int[] moveValues(int[] array, int position){
-        int[] copy = new int[array.length];
-        if(position > array.length){
-
-        }
+    public void moveValues(int[] array, int position){
         for (int i = position; i < array.length; i++) {
-
+            array[i] = array[i+1];
         }
-        return copy;
     }
 }
