@@ -3,21 +3,21 @@ package model;
 public class Player {
     private String name;
     private String id;
-    private int disponibleCredits;
-    private int playedGames;
+    private int availableCredits;
+    private int gamesPlayed;
 
-    public Player(String name, String id, int disponibleCredits, int playedGames){
+    public Player(String name, String id, int availableCredits, int gamesPlayed) {
         this.name = name;
         this.id = id;
-        this.disponibleCredits = disponibleCredits;
-        this.playedGames = playedGames;
+        this.availableCredits = availableCredits;
+        this.gamesPlayed = gamesPlayed;
     }
 
-    public Player(){
+    public Player() {
         this.name = "Unknown";
-        this.id = "No ID";
-        this.disponibleCredits = 0;
-        this.playedGames = 0;
+        this.id = "NONE";
+        this.availableCredits = 0;
+        this.gamesPlayed = 0;
     }
 
     public String getName() {
@@ -36,20 +36,20 @@ public class Player {
         this.id = id;
     }
 
-    public int getDisponibleCredits() {
-        return disponibleCredits;
+    public int getAvailableCredits() {
+        return availableCredits;
     }
 
-    public void setDisponibleCredits(int disponibleCredits) {
-        this.disponibleCredits = disponibleCredits;
+    public void setAvailableCredits(int availableCredits) {
+        this.availableCredits = availableCredits;
     }
 
-    public int getPlayedGames() {
-        return playedGames;
+    public int getGamesPlayed() {
+        return gamesPlayed;
     }
 
-    public void setPlayedGames(int playedGames) {
-        this.playedGames = playedGames;
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
     @Override
@@ -57,19 +57,19 @@ public class Player {
         return "Jugador " +
                 "nombre = " + this.name +
                 ", ID = " + this.id +
-                ", créditos disponibles = " + this.disponibleCredits +
-                ", partidas jugadas = " + this.playedGames;
+                ", créditos disponibles = " + this.availableCredits +
+                ", partidas jugadas = " + this.gamesPlayed;
     }
 
     @Override
     public boolean equals(Object obj) {
         boolean isEquals = false;
-        if(this==obj) {
+        if (this == obj) {
             isEquals = true;
             // la segunda parte se podría hacer también con getclass en vez de instanceof
-        }else if(obj!=null && obj instanceof Player){
+        } else if (obj != null && obj instanceof Player) {
             Player anotherPlayer = (Player) obj;
-            if(this.id.equals(anotherPlayer.getId())){
+            if (this.id.equals(anotherPlayer.getId())) {
                 isEquals = true;
             }
         }
@@ -79,28 +79,33 @@ public class Player {
     /**
      * Función para recargar créditos al jugador.
      */
-    public void rechargeCredits(int creditsToRecharge){
-        this.disponibleCredits+=creditsToRecharge;
+    public void rechargeCredits(int creditsToRecharge) throws Exception {
+        if(creditsToRecharge>0){
+            this.availableCredits += creditsToRecharge;
+        }else{
+            throw new Exception("No puedes recargar créditos negativos.");
+        }
     }
 
     /**
      * Función para incrementar número de partidas jugadas.
      */
-    public void incrementTimesArcadePlayed(){
-        this.playedGames++;
+    public void incrementTimesArcadePlayed() {
+        this.gamesPlayed++;
     }
 
     /**
-     * Función que gasta créditos para jugar una partida
+     * Función que gasta créditos para jugar una partida.
+     *
      * @param costArcadeMachine
      * @throws Exception
      */
     public boolean spendCredits(int costArcadeMachine) throws Exception {
         boolean canPay = false;
-        if(this.disponibleCredits>=costArcadeMachine){
-            disponibleCredits-=costArcadeMachine;
+        if (this.availableCredits >= costArcadeMachine) {
+            availableCredits -= costArcadeMachine;
             canPay = true;
-        }else{
+        } else {
             throw new Exception("No tiene suficientes créditos para jugar.");
         }
         return canPay;

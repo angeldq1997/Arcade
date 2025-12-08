@@ -61,7 +61,6 @@ public class Utils {
         return result;
     }
 
-
     public static boolean testInRange(int min, int max, int numberToVerify) {
         boolean inRange = false;
         if (numberToVerify >= min && numberToVerify <= max) {
@@ -72,14 +71,15 @@ public class Utils {
         return inRange;
     }
 
-    public static int genRandomNumber (int max){
-        int randomNumber = (int) (Math.random()* (max+1));
+    public static int genRandomNumber(int max) {
+        int randomNumber = (int) (Math.random() * (max + 1));
         return randomNumber;
     }
 
-    public int[] moveValues(int[] array, int position){
+    //TODO: Modificar función para desplazar valores array.
+    public int[] moveValues(int[] array, int position) {
         int[] copy = new int[array.length];
-        if(position > array.length){
+        if (position > array.length) {
 
         }
         for (int i = position; i < array.length; i++) {
