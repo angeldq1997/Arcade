@@ -40,10 +40,6 @@ public class Player {
         return availableCredits;
     }
 
-    public void setAvailableCredits(int availableCredits) {
-        this.availableCredits = availableCredits;
-    }
-
     public int getGamesPlayed() {
         return gamesPlayed;
     }

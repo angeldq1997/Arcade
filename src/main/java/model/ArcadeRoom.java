@@ -1,5 +1,7 @@
 package model;
 
+import utils.Utils;
+
 public class ArcadeRoom {
     Player[] players;
     ArcadeMachine[] arcadeMachines;
@@ -21,27 +23,35 @@ public class ArcadeRoom {
      * @param playerToFind Jugador a buscar.
      * @return La posición del jugador a buscar en el array de jugadores.
      */
-    private int findPlayerPosition (Player playerToFind) {
-        boolean foundPlayer = false;
-        int playerPosition = 0;
-        for (int i = 0; i < this.players.length && !foundPlayer; i++) {
-            if (this.players[i].equals(playerToFind)) {
-                foundPlayer = true;
-                playerPosition = i;
+    private int findPlayerPosition (Player playerToFind) throws Exception {
+        int playerPosition = -1;
+        if(playerToFind != null) {
+            boolean foundPlayer = false;
+            for (int i = 0; i < this.players.length && !foundPlayer; i++) {
+                if (this.players[i].equals(playerToFind)) {
+                    foundPlayer = true;
+                    playerPosition = i;
+                }
             }
+        }else{
+            throw new Exception("Error, ha seleccionado un jugador nulo, debe seleccionar un jugador existente.");
         }
         return playerPosition;
     }
 
 
-    private int findMachinePosition (ArcadeMachine machineToFind) {
-        boolean isMachineFound = false;
-        int machinePosition = 0;
-        for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
-            if (this.arcadeMachines[i].equals(machineToFind)) {
-                isMachineFound = true;
-                machinePosition = i;
+    private int findMachinePosition (ArcadeMachine machineToFind) throws Exception {
+        int machinePosition = -1;
+        if (machineToFind !=null) {
+            boolean isMachineFound = false;
+            for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
+                if (this.arcadeMachines[i].equals(machineToFind)) {
+                    isMachineFound = true;
+                    machinePosition = i;
+                }
             }
+        }else{
+            throw new Exception("Error, ha seleecionado una máquina nula, debe seleccionar una máquina existente.");
         }
         return machinePosition;
     }
@@ -70,14 +80,22 @@ public class ArcadeRoom {
         return playerPosition;
     }
 
-    public void removeMachine (ArcadeMachine machineToRemove) {
+    //TODO: Renovar codigo remove igual que jugador CREAR EDITAR Máquina.
+    public void removeMachine (ArcadeMachine machineToRemove) throws Exception {
         int position = findMachinePosition(machineToRemove);
         this.arcadeMachines[position] = null;
     }
 
-    public void removePlayer (Player playerToRemove) {
-        int position = findPlayerPosition(playerToRemove);
-        this.arcadeMachines[position] = null;
+    public boolean removePlayer (int MAXCHARACTERSPLAYER) throws Exception {
+        boolean removeSuccessful = false;
+        int playerPosition = -1;
+        String playerSelected = Utils.verifyString(MAXCHARACTERSPLAYER);
+        playerPosition = this.findPlayerByID(playerSelected);
+        if (playerPosition !=-1){
+            this.arcadeMachines[playerPosition] = null;
+            removeSuccessful = true;
+        }
+        return removeSuccessful;
     }
 
     public boolean registerNewPlayer (Player newPlayerToRegister) throws Exception {
@@ -108,6 +126,19 @@ public class ArcadeRoom {
             throw new Exception("Error, no se puede registrar una máquina vacía.");
         }
         return registerSuccessful;
+    }
+
+    public boolean editPlayer (int MAXCHARACTERSPLAYER, int MAXCHARACTERSID) throws Exception {
+        int playerPosition = -1;
+        boolean editedPlayer = false;
+        String playerSelected = Utils.verifyString(MAXCHARACTERSPLAYER);
+        playerPosition = this.findPlayerByID(playerSelected);
+        if (playerPosition !=-1){
+            this.players[playerPosition].setName(Utils.verifyString(MAXCHARACTERSPLAYER));
+            this.players[playerPosition].setId(Utils.verifyString(MAXCHARACTERSID));
+            editedPlayer =true;
+        }
+        return editedPlayer;
     }
 
     public String listPlayers () {

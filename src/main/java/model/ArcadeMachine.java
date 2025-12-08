@@ -13,9 +13,9 @@ public class ArcadeMachine {
     private int[] rankingScore;
     private Player[] bestPlayers;
     private int releasedYear;
-    private String
+    private String developer;
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay, int releasedYear) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
@@ -24,9 +24,10 @@ public class ArcadeMachine {
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
         this.releasedYear = releasedYear;
+         this.developer = developer;
     }
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore, Player[] bestPlayers, int releasedYear) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore, Player[] bestPlayers, int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
@@ -35,6 +36,7 @@ public class ArcadeMachine {
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
         this.releasedYear = releasedYear;
+        this.developer = developer;
     }
 
     public ArcadeMachine() {
@@ -46,6 +48,7 @@ public class ArcadeMachine {
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
         this.releasedYear = 1970;
+        this.developer = "Unknown developer";
     }
 
     public void setName(String name) {
@@ -91,8 +94,7 @@ public class ArcadeMachine {
     public String getBestPlayers() {
         String bestPlayerList = null;
         for (int i = 0; i < this.bestPlayers.length; i++) {
-            bestPlayerList += this.bestPlayers[i].getName();
-            //this.bestPlayers[i];
+            bestPlayerList += (this.bestPlayers[i].getName() + ", ");
         }
         return bestPlayerList;
     }
@@ -126,7 +128,9 @@ public class ArcadeMachine {
                 ", está activa = " + this.activated +
                 ", veces que se ha jugado = " + this.timesPlayed +
                 ", mejores puntuaciones = " + Arrays.toString(this.rankingScore) +
-                ", mejores jugadores = " + this.getBestPlayers() + ".";
+                ", mejores jugadores = " + this.getBestPlayers() +
+                ", año de lanzamiento = " + this.releasedYear +
+                "y desarrollador/a = " + this.developer + ".";
     }
 
     /**
