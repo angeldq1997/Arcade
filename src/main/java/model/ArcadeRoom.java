@@ -4,7 +4,12 @@ public class ArcadeRoom {
     Player[] players;
     ArcadeMachine[] arcadeMachines;
 
-    //Contructor básico
+    /**
+     * Constructor de sala recreativa. Requiere array de jugadores y de máquinas arcade.
+     *
+     * @param players        Array de jugadores de la sala recreativa.
+     * @param arcadeMachines Array de máquinas arcade de la sala recreativa.
+     */
     public ArcadeRoom(Player[] players, ArcadeMachine[] arcadeMachines) {
         this.players = players;
         this.arcadeMachines = arcadeMachines;
@@ -14,9 +19,9 @@ public class ArcadeRoom {
      * Función para encontrar un jugador concreto en el array de jugadores
      *
      * @param playerToFind Jugador a buscar.
-     * @return True si ha encontrado al jugador con la misma ID y false si no lo encuentra.
+     * @return La posición del jugador a buscar en el array de jugadores.
      */
-    private int findPlayer(Player playerToFind) {
+    private int findPlayerPosition (Player playerToFind) {
         boolean foundPlayer = false;
         int playerPosition = 0;
         for (int i = 0; i < this.players.length && !foundPlayer; i++) {
@@ -28,7 +33,8 @@ public class ArcadeRoom {
         return playerPosition;
     }
 
-    private int findMachine(ArcadeMachine machineToFind) {
+
+    private int findMachinePosition (ArcadeMachine machineToFind) {
         boolean isMachineFound = false;
         int machinePosition = 0;
         for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
@@ -40,7 +46,7 @@ public class ArcadeRoom {
         return machinePosition;
     }
 
-    public int findMachineByName(String machineName) {
+    public int findMachineByName (String machineName) {
         boolean isMachineFound = false;
         int machinePosition = 0;
         for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
@@ -52,7 +58,7 @@ public class ArcadeRoom {
         return machinePosition;
     }
 
-    public int findPlayerByID(String idToFind) {
+    public int findPlayerByID (String idToFind) {
         boolean isPlayerFound = false;
         int playerPosition = -1;
         for (int i = 0; i < this.players.length && !isPlayerFound; i++) {
@@ -65,16 +71,16 @@ public class ArcadeRoom {
     }
 
     public void removeMachine (ArcadeMachine machineToRemove) {
-        int position = findMachine(machineToRemove);
+        int position = findMachinePosition(machineToRemove);
         this.arcadeMachines[position] = null;
     }
 
     public void removePlayer (Player playerToRemove) {
-        int position = findPlayer(playerToRemove);
+        int position = findPlayerPosition(playerToRemove);
         this.arcadeMachines[position] = null;
     }
 
-    public boolean registerNewPlayer(Player newPlayerToRegister) throws Exception {
+    public boolean registerNewPlayer (Player newPlayerToRegister) throws Exception {
         boolean registerSuccessful = false;
         if (newPlayerToRegister != null) {
             for (int i = 0; i < this.players.length; i++) {
@@ -89,7 +95,7 @@ public class ArcadeRoom {
         return registerSuccessful;
     }
 
-    public boolean registerNewMachine(ArcadeMachine newMachineToRegister) throws Exception {
+    public boolean registerNewMachine (ArcadeMachine newMachineToRegister) throws Exception {
         boolean registerSuccessful = false;
         if (newMachineToRegister != null) {
             for (int i = 0; i < this.arcadeMachines.length; i++) {
@@ -99,12 +105,12 @@ public class ArcadeRoom {
                 }
             }
         } else {
-            throw new Exception("No se puede registrar una máquina vacía.");
+            throw new Exception("Error, no se puede registrar una máquina vacía.");
         }
         return registerSuccessful;
     }
 
-    public String listPlayers(){
+    public String listPlayers () {
         String playerList = null;
         for (int i = 0; i < this.players.length; i++) {
             playerList += (this.players[i].getName() + " ");
@@ -112,7 +118,7 @@ public class ArcadeRoom {
         return playerList;
     }
 
-    public String listMachines(){
+    public String listMachines () {
         String machineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             machineList += (this.arcadeMachines[i].getName() + " ");
@@ -120,21 +126,21 @@ public class ArcadeRoom {
         return machineList;
     }
 
-    public String listActiveMachines(){
+    public String listActiveMachines () {
         String activeMachineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
-            if(this.arcadeMachines[i].isActivated()) {
+            if (this.arcadeMachines[i].isActivated()) {
                 activeMachineList += (this.arcadeMachines[i].getName() + " ");
             }
         }
         return activeMachineList;
     }
 
-    public Player mostActivePlayer(){
+    public Player mostActivePlayer () {
         Player mostActivePlayer = null;
         int arcadesPlayed = 0;
         for (int i = 0; i < this.players.length; i++) {
-            if(this.players[i].getGamesPlayed()>arcadesPlayed) {
+            if (this.players[i].getGamesPlayed() > arcadesPlayed) {
                 arcadesPlayed = this.players[i].getGamesPlayed();
                 mostActivePlayer = this.players[i];
             }
@@ -142,11 +148,11 @@ public class ArcadeRoom {
         return mostActivePlayer;
     }
 
-    public ArcadeMachine mostActiveMachine(){
+    public ArcadeMachine mostActiveMachine () {
         ArcadeMachine mostActiveMachine = null;
         int arcadePlayedRuns = 0;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
-            if(this.arcadeMachines[i].getTimesPlayed()>arcadePlayedRuns) {
+            if (this.arcadeMachines[i].getTimesPlayed() > arcadePlayedRuns) {
                 arcadePlayedRuns = this.arcadeMachines[i].getTimesPlayed();
                 mostActiveMachine = this.arcadeMachines[i];
             }

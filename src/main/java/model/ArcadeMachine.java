@@ -12,8 +12,10 @@ public class ArcadeMachine {
     private int timesPlayed;
     private int[] rankingScore;
     private Player[] bestPlayers;
+    private int releasedYear;
+    private String
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, int releasedYear) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
@@ -21,6 +23,18 @@ public class ArcadeMachine {
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
+        this.releasedYear = releasedYear;
+    }
+
+    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore, Player[] bestPlayers, int releasedYear) {
+        this.name = name;
+        this.genre = genre;
+        this.pricePerPlay = pricePerPlay;
+        this.activated = true;
+        this.timesPlayed = 0;
+        this.rankingScore = new int[]{0, 0, 0};
+        this.bestPlayers = null;
+        this.releasedYear = releasedYear;
     }
 
     public ArcadeMachine() {
@@ -31,6 +45,7 @@ public class ArcadeMachine {
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
+        this.releasedYear = 1970;
     }
 
     public void setName(String name) {
@@ -124,13 +139,13 @@ public class ArcadeMachine {
             if (this.activated) {
                 this.activated = false;
             } else {
-                throw new Exception("La máquina no puede desactivarse ya está desactivada.");
+                throw new Exception("Error, la máquina no puede desactivarse ya está desactivada.");
             }
         } else {
             if (!this.activated) {
                 this.activated = true;
             } else {
-                throw new Exception("La máquina no puede activarse ya está activada.");
+                throw new Exception("Error, la máquina no puede activarse ya está activada.");
             }
         }
     }
@@ -147,7 +162,7 @@ public class ArcadeMachine {
                 modifyActivationMachine(false);
             }
         } else {
-            throw new Exception("No se puede añadir al número de veces jugadas estando apagada la máquina.");
+            throw new Exception("Error, no se puede añadir al número de veces jugadas estando apagada la máquina.");
         }
     }
 
@@ -189,7 +204,7 @@ public class ArcadeMachine {
             this.storeScore(activePlayer, score);
 
         } else {
-            throw new Exception("No se puede jugar la máquina está desactivada, por favor actívela antes de iniciar partida.");
+            throw new Exception("Error, no se puede jugar la máquina está desactivada, por favor actívela antes de iniciar partida.");
         }
         return score;
     }

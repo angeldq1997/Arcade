@@ -61,6 +61,15 @@ public class Utils {
         return result;
     }
 
+    public static String verifyString(int characterCount) throws Exception {
+        Scanner keyboard = new Scanner(System.in);
+        String textToVerify = keyboard.next();
+        if (textToVerify.length() > characterCount){
+            throw new Exception("Error, ha excedido el número de carácteres máximo.");
+        }
+        return textToVerify;
+    }
+
     public static boolean testInRange(int min, int max, int numberToVerify) {
         boolean inRange = false;
         if (numberToVerify >= min && numberToVerify <= max) {

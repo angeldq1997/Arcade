@@ -83,7 +83,7 @@ public class Player {
         if(creditsToRecharge>0){
             this.availableCredits += creditsToRecharge;
         }else{
-            throw new Exception("No puedes recargar créditos negativos.");
+            throw new Exception("Error, no puedes recargar créditos negativos.");
         }
     }
 
@@ -106,7 +106,7 @@ public class Player {
             availableCredits -= costArcadeMachine;
             canPay = true;
         } else {
-            throw new Exception("No tiene suficientes créditos para jugar.");
+            throw new Exception("Error, no tiene suficientes créditos para jugar.");
         }
         return canPay;
     }
