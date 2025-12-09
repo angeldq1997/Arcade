@@ -192,24 +192,4 @@ public class ArcadeMachine {
         }
         return foundScore;
     }
-
-    public int playMachine(Player activePlayer) throws Exception {
-        final int MAXSCORE = 9999;
-        int score = Utils.genRandomNumber(MAXSCORE);
-        if (this.isActivated()) {
-            //TODO: CONSULTAR SI ES POSIBLE EN UN TRY COMPROBAR DOS MÉTODOS DIFERENTES
-            try {
-                this.addPlayTimeToMachine();
-                activePlayer.spendCredits(this.pricePerPlay);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            activePlayer.incrementTimesArcadePlayed();
-            this.storeScore(activePlayer, score);
-
-        } else {
-            throw new Exception("Error, no se puede jugar la máquina está desactivada, por favor actívela antes de iniciar partida.");
-        }
-        return score;
-    }
 }

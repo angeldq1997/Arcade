@@ -13,6 +13,13 @@ public class Player {
         this.gamesPlayed = gamesPlayed;
     }
 
+    public Player(String name, String id) {
+        this.name = name;
+        this.id = id;
+        this.availableCredits = 0;
+        this.gamesPlayed = 0;
+    }
+
     public Player() {
         this.name = "Unknown";
         this.id = "NONE";

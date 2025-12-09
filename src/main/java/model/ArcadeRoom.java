@@ -23,9 +23,9 @@ public class ArcadeRoom {
      * @param playerToFind Jugador a buscar.
      * @return La posición del jugador a buscar en el array de jugadores.
      */
-    private int findPlayerPosition (Player playerToFind) throws Exception {
+    private int findPlayerPosition(Player playerToFind) throws Exception {
         int playerPosition = -1;
-        if(playerToFind != null) {
+        if (playerToFind != null) {
             boolean foundPlayer = false;
             for (int i = 0; i < this.players.length && !foundPlayer; i++) {
                 if (this.players[i].equals(playerToFind)) {
@@ -33,16 +33,16 @@ public class ArcadeRoom {
                     playerPosition = i;
                 }
             }
-        }else{
+        } else {
             throw new Exception("Error, ha seleccionado un jugador nulo, debe seleccionar un jugador existente.");
         }
         return playerPosition;
     }
 
 
-    private int findMachinePosition (ArcadeMachine machineToFind) throws Exception {
+    private int findMachinePosition(ArcadeMachine machineToFind) throws Exception {
         int machinePosition = -1;
-        if (machineToFind !=null) {
+        if (machineToFind != null) {
             boolean isMachineFound = false;
             for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
                 if (this.arcadeMachines[i].equals(machineToFind)) {
@@ -50,13 +50,13 @@ public class ArcadeRoom {
                     machinePosition = i;
                 }
             }
-        }else{
-            throw new Exception("Error, ha seleecionado una máquina nula, debe seleccionar una máquina existente.");
+        } else {
+            throw new Exception("Error, ha seleccionado una máquina nula, debe seleccionar una máquina existente.");
         }
         return machinePosition;
     }
 
-    public int findMachineByName (String machineName) {
+    public int findMachineByName(String machineName) {
         boolean isMachineFound = false;
         int machinePosition = 0;
         for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
@@ -68,7 +68,7 @@ public class ArcadeRoom {
         return machinePosition;
     }
 
-    public int findPlayerByID (String idToFind) {
+    public int findPlayerByID(String idToFind) {
         boolean isPlayerFound = false;
         int playerPosition = -1;
         for (int i = 0; i < this.players.length && !isPlayerFound; i++) {
@@ -80,40 +80,43 @@ public class ArcadeRoom {
         return playerPosition;
     }
 
-    //TODO: Renovar codigo remove igual que jugador CREAR EDITAR Máquina.
-    public void removeMachine (ArcadeMachine machineToRemove) throws Exception {
-        int position = findMachinePosition(machineToRemove);
-        this.arcadeMachines[position] = null;
+    public boolean removeMachine(String message, int MAXCHARACTERSMACHINE) throws Exception {
+        boolean removeSuccessful = false;
+        int machinePosition = -1;
+        String machineSelected = Utils.verifyString(message, MAXCHARACTERSMACHINE);
+        machinePosition = this.findMachineByName(machineSelected);
+        if (machinePosition != -1) {
+            this.arcadeMachines[machinePosition] = null;
+            removeSuccessful = true;
+        }
+        return removeSuccessful;
     }
 
-    public boolean removePlayer (int MAXCHARACTERSPLAYER) throws Exception {
+    public boolean removePlayer(String message, int MAXCHARACTERSPLAYER) throws Exception {
         boolean removeSuccessful = false;
         int playerPosition = -1;
-        String playerSelected = Utils.verifyString(MAXCHARACTERSPLAYER);
+        String playerSelected = Utils.verifyString(message, MAXCHARACTERSPLAYER);
         playerPosition = this.findPlayerByID(playerSelected);
-        if (playerPosition !=-1){
+        if (playerPosition != -1) {
             this.arcadeMachines[playerPosition] = null;
             removeSuccessful = true;
         }
         return removeSuccessful;
     }
 
-    public boolean registerNewPlayer (Player newPlayerToRegister) throws Exception {
+    public boolean registerNewPlayer(String messageName, String messageId, int maxCharacterName, int maxCharacterId) throws Exception {
         boolean registerSuccessful = false;
-        if (newPlayerToRegister != null) {
-            for (int i = 0; i < this.players.length; i++) {
-                if (players[i].getId() == "NONE" || players[i] == null) {
-                    players[i] = newPlayerToRegister;
-                    registerSuccessful = true;
-                }
+        for (int i = 0; i < this.players.length && !registerSuccessful; i++) {
+            if (players[i].getId() == "NONE" || players[i] == null) {
+                players[i].setName(Utils.verifyString(messageName, maxCharacterName));
+                players[i].setId(Utils.verifyString(messageId, maxCharacterId));
+                registerSuccessful = true;
             }
-        } else {
-            throw new Exception("No se puede registrar un jugador sin datos.");
         }
         return registerSuccessful;
     }
 
-    public boolean registerNewMachine (ArcadeMachine newMachineToRegister) throws Exception {
+    public boolean registerNewMachine(ArcadeMachine newMachineToRegister) throws Exception {
         boolean registerSuccessful = false;
         if (newMachineToRegister != null) {
             for (int i = 0; i < this.arcadeMachines.length; i++) {
@@ -128,20 +131,34 @@ public class ArcadeRoom {
         return registerSuccessful;
     }
 
-    public boolean editPlayer (int MAXCHARACTERSPLAYER, int MAXCHARACTERSID) throws Exception {
+    public boolean editPlayer(String messageSearchIdPlayer, String messageName, String messageId, int MAXCHARACTERSNAME, int MAXCHARACTERSID) throws Exception {
         int playerPosition = -1;
         boolean editedPlayer = false;
-        String playerSelected = Utils.verifyString(MAXCHARACTERSPLAYER);
-        playerPosition = this.findPlayerByID(playerSelected);
-        if (playerPosition !=-1){
-            this.players[playerPosition].setName(Utils.verifyString(MAXCHARACTERSPLAYER));
-            this.players[playerPosition].setId(Utils.verifyString(MAXCHARACTERSID));
-            editedPlayer =true;
+        String idPlayerToSearch = Utils.verifyString(messageSearchIdPlayer, MAXCHARACTERSNAME);
+        playerPosition = this.findPlayerByID(idPlayerToSearch);
+        if (playerPosition != -1) {
+            this.players[playerPosition].setName(Utils.verifyString(messageName, MAXCHARACTERSNAME));
+            this.players[playerPosition].setId(Utils.verifyString(messageId, MAXCHARACTERSID));
+            editedPlayer = true;
         }
         return editedPlayer;
     }
 
-    public String listPlayers () {
+    public boolean editMachine(String messageSearchMachine, String messageName, String messageGenre, int MAXCHARACTERSMACHINE) throws Exception {
+        int machinePosition = -1;
+        boolean editedPlayer = false;
+        String nameMachineToSearch = Utils.verifyString(messageSearchMachine, MAXCHARACTERSMACHINE);
+        machinePosition = this.findMachineByName(nameMachineToSearch);
+        if (machinePosition != -1) {
+            this.arcadeMachines[machinePosition].setName(Utils.verifyString(messageName, MAXCHARACTERSMACHINE));
+            this.arcadeMachines[machinePosition].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERSMACHINE));
+            this.arcadeMachines[machinePosition].setPricePerPlay(Utils.readIntInRange());
+            editedPlayer = true;
+        }
+        return editedPlayer;
+    }
+
+    public String listPlayers() {
         String playerList = null;
         for (int i = 0; i < this.players.length; i++) {
             playerList += (this.players[i].getName() + " ");
@@ -149,7 +166,7 @@ public class ArcadeRoom {
         return playerList;
     }
 
-    public String listMachines () {
+    public String listMachines() {
         String machineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             machineList += (this.arcadeMachines[i].getName() + " ");
@@ -157,7 +174,7 @@ public class ArcadeRoom {
         return machineList;
     }
 
-    public String listActiveMachines () {
+    public String listActiveMachines() {
         String activeMachineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             if (this.arcadeMachines[i].isActivated()) {
@@ -167,7 +184,7 @@ public class ArcadeRoom {
         return activeMachineList;
     }
 
-    public Player mostActivePlayer () {
+    public Player mostActivePlayer() {
         Player mostActivePlayer = null;
         int arcadesPlayed = 0;
         for (int i = 0; i < this.players.length; i++) {
@@ -179,7 +196,7 @@ public class ArcadeRoom {
         return mostActivePlayer;
     }
 
-    public ArcadeMachine mostActiveMachine () {
+    public ArcadeMachine mostActiveMachine() {
         ArcadeMachine mostActiveMachine = null;
         int arcadePlayedRuns = 0;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
@@ -189,5 +206,25 @@ public class ArcadeRoom {
             }
         }
         return mostActiveMachine;
+    }
+
+    public int playMachine(String messagePlayer, String messageMachine,int MAXSCORE, int MAXCHARACTERSID, int MAXCHARACTERSMACHINENAME) throws Exception {
+        int score = Utils.genRandomNumber(MAXSCORE);
+        int machinePosition = -1, playerPosition = -1;
+        String playerSelected = Utils.verifyString(messagePlayer, MAXCHARACTERSID);
+        Player activePlayer = this.players[this.findPlayerByID(playerSelected)];
+
+        String machineSelected = Utils.verifyString(messageMachine, MAXCHARACTERSMACHINENAME);
+        ArcadeMachine arcadeMachineToPlay = this.arcadeMachines[this.findMachineByName(machineSelected)];
+
+        if (arcadeMachineToPlay.isActivated()) {
+            arcadeMachineToPlay.addPlayTimeToMachine();
+            activePlayer.spendCredits(arcadeMachineToPlay.getPricePerPlay());
+            activePlayer.incrementTimesArcadePlayed();
+            arcadeMachineToPlay.storeScore(activePlayer, score);
+        } else {
+            throw new Exception("Error, no se puede jugar la máquina está desactivada, por favor actívela antes de iniciar partida.");
+        }
+        return score;
     }
 }

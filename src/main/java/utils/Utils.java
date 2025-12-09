@@ -10,7 +10,7 @@ public class Utils {
     /**
      * Solicita al usuario un número entero por consola y valida que la entrada sea correcta.
      * Si el usuario introduce un valor que no es un entero (por ejemplo, texto o decimales),
-     * el método muestra un mensaje de error y vuelve a pedir el número hasta que sea válido.
+     * la función muestra un mensaje de error y vuelve a pedir el número hasta que sea válido.
      *
      * @param msn      mensaje que se muestra al usuario para solicitar el número
      * @param msnError mensaje que se muestra cuando la entrada no es válida
@@ -61,23 +61,21 @@ public class Utils {
         return result;
     }
 
-    public static String verifyString(int characterCount) throws Exception {
+    public static String verifyString(String message,int characterCount) throws Exception {
         Scanner keyboard = new Scanner(System.in);
-        String textToVerify = keyboard.next();
-        if (textToVerify.length() > characterCount){
-            throw new Exception("Error, ha excedido el número de carácteres máximo.");
-        }
+        String textToVerify = "";
+        boolean isValid = false;
+        do {
+            System.out.println(message);
+            textToVerify = keyboard.nextLine().trim();
+            if (textToVerify.length() > characterCount) {
+                throw new Exception("Error, ha excedido el número de carácteres máximo.");
+            } else if (textToVerify.isEmpty()) {
+                throw new Exception("Error, ha introducido un texto vacío.");
+            }
+            isValid = true;
+        }while(!isValid);
         return textToVerify;
-    }
-
-    public static boolean testInRange(int min, int max, int numberToVerify) {
-        boolean inRange = false;
-        if (numberToVerify >= min && numberToVerify <= max) {
-            inRange = true;
-        } else {
-            inRange = false;
-        }
-        return inRange;
     }
 
     public static int genRandomNumber(int max) {
