@@ -1,7 +1,5 @@
 package utils;
 
-import model.Player;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -81,6 +79,16 @@ public class Utils {
     public static int genRandomNumber(int max) {
         int randomNumber = (int) (Math.random() * (max + 1));
         return randomNumber;
+    }
+
+    public static boolean verifyInRange(int min, int max, int numberToCheck){
+        boolean isInRange = true;
+        if (numberToCheck >= min && numberToCheck <= max) {
+            isInRange = true;
+        } else {
+            isInRange = false;
+        }
+        return isInRange;
     }
 
     //TODO: Modificar función para desplazar valores array.

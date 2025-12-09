@@ -24,6 +24,9 @@ public class Main {
         final int DELUXEPRICE = 30;
 
         final int MAXSCORE = 9999;
+        final int MAXYEAR = 2025;
+        final int MINCREDITS = 1;
+        final int MAXCREDITS = 1000;
 
         //RELLENADO INICIAL DE DATOS ARRAY. Ya que no tenemos una forma actualmente de preservar la información con el
         //cierre y la apertura del programa.
@@ -44,78 +47,12 @@ public class Main {
 
         //INICIALIZACIÓN DE ARRAY DE JUGADORES Y MÁQUINAS ARCADE.
         Player[] players = {player1, player2, player3, player4, null, null, null, null, null, null};
-
         ArcadeMachine[] arcadeMachinesInRoom = {arcadeMachine1, arcadeMachine2, arcadeMachine3, arcadeMachine4, arcadeMachine5, arcadeMachine6, null, null, null, null};
 
+        //Creación de sala recreativa con los arrays anteriores:
         ArcadeRoom arcadeRoom1 = new ArcadeRoom(players, arcadeMachinesInRoom);
 
-        int option = 0, subOption = 0;
-        do {
-            System.out.println("--- MENÚ RECREATIVAS ARCADIA ---\n\t0. SALIR.\n\t1. JUGAR UNA PARTIDA.\n\t2. ADMINISTRAR JUGADOR/ES.\n\t3. ADMINISTRAR MÁQUINA/S.\n\t4. ESTADÍSTICAS Y LISTADO.");
-            option = Utils.readIntInRange(0, 4, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 4.");
-            switch (option) {
-                case 0:
-                    System.out.println("Ha seleccionado salir del programa, gracias por su tiempo.");
-                    break;
-
-                case 1:
-                    System.out.println("¡Ha seleccionado jugar una partida!");
-                    try {
-                        arcadeRoom1.playMachine("Escriba el ID del jugador que va a jugar (números y letra): ", "Escriba el nombre de la máquina que va a usarse: ", MAXSCORE, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-
-                case 2:
-                    System.out.println("Ha seleccionado Administrar jugador/es, por favor seleccione opción a elegir:");
-                    View.subMenuPlayer(arcadeRoom1, MAXCHARACTERSPLAYER, MAXCHARACTERSID);
-                    break;
-
-                case 3:
-                    System.out.println("Ha seleccionado Administrar máquina/s, por favor seleccione opción a elegir:");
-                    System.out.println("\t0. Salir\n\t1. Dar de alta Máquina Arcade.\n\t2. Dar baja Máquina Arcade.\n\t3. Editar Máquina Arcade.");
-                    subOption = Utils.readIntInRange(0, 3, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 3.");
-                    switch (subOption){
-                        case 0:
-                            System.out.println("Ha seleccionado salir de la administración de máquinas, volviendo al programa inicial.");
-                            break;
-
-                        case 1:
-                            System.out.println("Seleccione máquina a dar de alta: ");
-                            try {
-                                //Sería necesario un sistema para elegir una máquina a añadir, por ejemplo una array de máquinas no asignadas.
-                                arcadeRoom1.registerNewMachine(arcadeMachine7);
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                            break;
-
-                        case 2:
-                            System.out.println("Seleccione máquina a dar de baja: ");
-                            try{
-                                arcadeRoom1.removeMachine("Seleccione nombre de máquina a eliminar: ", MAXCHARACTERSARCADEMACHINE);
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                            break;
-
-                        case 3:
-                            System.out.println("Seleccione máquina a editar: ");
-                            try{
-                                arcadeRoom1.editMachine("Introduzca nombre de la máquina a buscar: ", "Introduzca nombre modificado de la máquina", "Introduzca nombre del género a correjir: ", MAXCHARACTERSARCADEMACHINE);
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                            break;
-
-                        default:
-                            System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
-                    }
-                    break;
-                default:
-                    System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
-            }
-        } while (option != 0);
+        //Vista del menú principal en clase View.
+        View.principalMenu(arcadeRoom1, arcadeMachinesInRoom, players,MAXCHARACTERSPLAYER, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MAXSCORE, MINCREDITS, MAXCREDITS);
     }
 }

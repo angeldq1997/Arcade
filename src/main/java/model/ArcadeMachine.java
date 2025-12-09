@@ -99,6 +99,22 @@ public class ArcadeMachine {
         return bestPlayerList;
     }
 
+    public int getReleasedYear() {
+        return releasedYear;
+    }
+
+    public void setReleasedYear(int releasedYear) {
+        this.releasedYear = releasedYear;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
     //TODO: TEMPORAL BORRALO LUEGO BURRO!!!!!!
     public void setTimesPlayed(int timesPlayed) {
         this.timesPlayed = timesPlayed;
@@ -135,7 +151,6 @@ public class ArcadeMachine {
 
     /**
      * Función que modifica la activación de la máquina si ya estaba en el mismo estado seleccionado, lanza excepción.
-     *
      * @throws Exception Excepción lanzada en caso de que se seleccione la misma opción de estado de la máquina.
      */
     public void modifyActivationMachine(boolean state) throws Exception {

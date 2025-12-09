@@ -17,50 +17,11 @@ public class ArcadeRoom {
         this.arcadeMachines = arcadeMachines;
     }
 
-    /**
-     * Función para encontrar un jugador concreto en el array de jugadores
-     *
-     * @param playerToFind Jugador a buscar.
-     * @return La posición del jugador a buscar en el array de jugadores.
-     */
-    private int findPlayerPosition(Player playerToFind) throws Exception {
-        int playerPosition = -1;
-        if (playerToFind != null) {
-            boolean foundPlayer = false;
-            for (int i = 0; i < this.players.length && !foundPlayer; i++) {
-                if (this.players[i].equals(playerToFind)) {
-                    foundPlayer = true;
-                    playerPosition = i;
-                }
-            }
-        } else {
-            throw new Exception("Error, ha seleccionado un jugador nulo, debe seleccionar un jugador existente.");
-        }
-        return playerPosition;
-    }
-
-
-    private int findMachinePosition(ArcadeMachine machineToFind) throws Exception {
-        int machinePosition = -1;
-        if (machineToFind != null) {
-            boolean isMachineFound = false;
-            for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
-                if (this.arcadeMachines[i].equals(machineToFind)) {
-                    isMachineFound = true;
-                    machinePosition = i;
-                }
-            }
-        } else {
-            throw new Exception("Error, ha seleccionado una máquina nula, debe seleccionar una máquina existente.");
-        }
-        return machinePosition;
-    }
-
     public int findMachineByName(String machineName) {
         boolean isMachineFound = false;
         int machinePosition = 0;
         for (int i = 0; i < this.arcadeMachines.length && !isMachineFound; i++) {
-            if (this.arcadeMachines[i].getName().equals(machineName)) {
+            if (this.arcadeMachines[i] !=null && this.arcadeMachines[i].getName().equalsIgnoreCase(machineName)) {
                 isMachineFound = true;
                 machinePosition = i;
             }
@@ -68,14 +29,17 @@ public class ArcadeRoom {
         return machinePosition;
     }
 
-    public int findPlayerByID(String idToFind) {
+    public int findPlayerByID(String idToFind) throws Exception {
         boolean isPlayerFound = false;
         int playerPosition = -1;
         for (int i = 0; i < this.players.length && !isPlayerFound; i++) {
-            if (this.players[i].getId().equals(idToFind)) {
+            if (this.players[i] !=null && this.players[i].getId().equalsIgnoreCase(idToFind)) {
                 isPlayerFound = true;
                 playerPosition = i;
             }
+        }
+        if (playerPosition==-1){
+            throw new Exception("No se ha encontrado al jugador con la ID introducida.");
         }
         return playerPosition;
     }
@@ -116,17 +80,15 @@ public class ArcadeRoom {
         return registerSuccessful;
     }
 
-    public boolean registerNewMachine(ArcadeMachine newMachineToRegister) throws Exception {
+    public boolean registerNewMachine(String messageName, String messageGenre,int MAXCHARACTERNAMEMACHINE) throws Exception {
         boolean registerSuccessful = false;
-        if (newMachineToRegister != null) {
-            for (int i = 0; i < this.arcadeMachines.length; i++) {
-                if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
-                    arcadeMachines[i] = newMachineToRegister;
-                    registerSuccessful = true;
-                }
+        for (int i = 0; i < this.arcadeMachines.length; i++) {
+            if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
+                arcadeMachines[i].setName(Utils.verifyString(messageName, MAXCHARACTERNAMEMACHINE));
+                arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
+                arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
+                registerSuccessful = true;
             }
-        } else {
-            throw new Exception("Error, no se puede registrar una máquina vacía.");
         }
         return registerSuccessful;
     }
@@ -144,24 +106,27 @@ public class ArcadeRoom {
         return editedPlayer;
     }
 
-    public boolean editMachine(String messageSearchMachine, String messageName, String messageGenre, int MAXCHARACTERSMACHINE) throws Exception {
+    public boolean editMachine(String messageSearchMachine, String messageName, String messageGenre, int maxYear,String messageReleaseYear, int MAXCHARACTERSMACHINE, int minPrice, int maxPrice, String messagePrice, String messageError) throws Exception {
         int machinePosition = -1;
-        boolean editedPlayer = false;
+        boolean editedMachine = false;
         String nameMachineToSearch = Utils.verifyString(messageSearchMachine, MAXCHARACTERSMACHINE);
         machinePosition = this.findMachineByName(nameMachineToSearch);
         if (machinePosition != -1) {
             this.arcadeMachines[machinePosition].setName(Utils.verifyString(messageName, MAXCHARACTERSMACHINE));
             this.arcadeMachines[machinePosition].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERSMACHINE));
-            this.arcadeMachines[machinePosition].setPricePerPlay(Utils.readIntInRange());
-            editedPlayer = true;
+            this.arcadeMachines[machinePosition].setReleasedYear(Utils.readIntInRange(1950, maxYear, messageReleaseYear, messageError));
+            this.arcadeMachines[machinePosition].setPricePerPlay(Utils.readIntInRange(minPrice, maxPrice, messagePrice, messageError));
+            editedMachine = true;
         }
-        return editedPlayer;
+        return editedMachine;
     }
 
     public String listPlayers() {
         String playerList = null;
         for (int i = 0; i < this.players.length; i++) {
-            playerList += (this.players[i].getName() + " ");
+            if(this.players[i] !=null) {
+                playerList += (this.players[i].getName() + " ");
+            }
         }
         return playerList;
     }
@@ -169,7 +134,9 @@ public class ArcadeRoom {
     public String listMachines() {
         String machineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
-            machineList += (this.arcadeMachines[i].getName() + " ");
+            if(this.arcadeMachines[i] !=null) {
+                machineList += (this.arcadeMachines[i].getName() + " ");
+            }
         }
         return machineList;
     }
@@ -208,9 +175,28 @@ public class ArcadeRoom {
         return mostActiveMachine;
     }
 
-    public int playMachine(String messagePlayer, String messageMachine,int MAXSCORE, int MAXCHARACTERSID, int MAXCHARACTERSMACHINENAME) throws Exception {
+    private boolean existPlayer(Player player) {
+        boolean exist = false;
+        for (int i = 0; i < this.players.length && !exist; i++) {
+            if (this.players[i] != null && this.players[i].equals(player)) {
+                exist = true;
+            }
+        }
+        return exist;
+    }
+
+    private boolean existMachine(ArcadeMachine arcadeMachine) {
+        boolean exist = false;
+        for (int i = 0; i < this.arcadeMachines.length && !exist; i++) {
+            if (this.arcadeMachines[i] != null && this.arcadeMachines[i].equals(arcadeMachine)) {
+                exist = true;
+            }
+        }
+        return exist;
+    }
+
+    public int playMachine(String messagePlayer, String messageMachine, int MAXSCORE, int MAXCHARACTERSID, int MAXCHARACTERSMACHINENAME) throws Exception {
         int score = Utils.genRandomNumber(MAXSCORE);
-        int machinePosition = -1, playerPosition = -1;
         String playerSelected = Utils.verifyString(messagePlayer, MAXCHARACTERSID);
         Player activePlayer = this.players[this.findPlayerByID(playerSelected)];
 

@@ -105,11 +105,15 @@ public class Player {
      */
     public boolean spendCredits(int costArcadeMachine) throws Exception {
         boolean canPay = false;
-        if (this.availableCredits >= costArcadeMachine) {
-            availableCredits -= costArcadeMachine;
-            canPay = true;
+        if(costArcadeMachine > 0) {
+            if (this.availableCredits >= costArcadeMachine) {
+                availableCredits -= costArcadeMachine;
+                canPay = true;
+            } else {
+                throw new Exception("Error, no tiene suficientes créditos para jugar.");
+            }
         } else {
-            throw new Exception("Error, no tiene suficientes créditos para jugar.");
+            throw new Exception("Error, no pueden gastarse créditos negativos.");
         }
         return canPay;
     }

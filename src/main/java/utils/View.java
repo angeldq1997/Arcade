@@ -1,46 +1,194 @@
 package utils;
 
+import model.ArcadeMachine;
 import model.ArcadeRoom;
+import model.Player;
 
 public class View {
-    public static int subMenuPlayer(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID){
+    public static void principalMenu(ArcadeRoom arcadeRoom1, ArcadeMachine[] arcadeMachinesInRoom, Player[] players, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int maxCredits, int minCredits) {
+        int option = 0;
+        do {
+            System.out.println("\n--- MENÚ RECREATIVAS ARCADIA ---\n\t0. SALIR.\n\t1. JUGAR UNA PARTIDA.\n\t2. ADMINISTRAR JUGADOR/ES.\n\t3. ADMINISTRAR MÁQUINA/S.\n\t4. ESTADÍSTICAS Y LISTADO.");
+            option = Utils.readIntInRange(0, 4, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 4.");
+            switch (option) {
+                case 0:
+                    System.out.println("Ha seleccionado salir del programa, gracias por su tiempo.");
+                    break;
+
+                case 1:
+                    System.out.println("¡Ha seleccionado jugar una partida!");
+                    try {
+                        System.out.println("Ha conseguido una puntuación de: " + arcadeRoom1.playMachine("Escriba el ID del jugador que va a jugar (números y letra): ", "Escriba el nombre de la máquina que va a usarse: ", MAXSCORE, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 2:
+                    subMenuPlayer(arcadeRoom1, players, MAXCHARACTERSPLAYER, MAXCHARACTERSID, minCredits, maxCredits);
+                    break;
+
+                case 3:
+                    subMenuMachine(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, MAXYEAR, arcadeMachinesInRoom);
+                    break;
+
+                case 4:
+                    subMenuStatistics(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, arcadeMachinesInRoom);
+                    break;
+                default:
+                    System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
+            }
+        } while (option != 0);
+    }
+
+    private static void subMenuPlayer(ArcadeRoom arcadeRoom1, Player[] players, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int minCredits, int maxCredits) {
         int subOption = 0;
-        System.out.println("\t0. Salir\n\t1. Dar de alta Jugador.\n\t2. Dar baja jugador.\n\t3. Editar jugador.");
-        subOption = Utils.readIntInRange(0, 3, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 3.");
-        switch (subOption) {
-            case 0:
-                System.out.println("Ha seleccionado salir de la administración de jugadores, volviendo al programa inicial.");
-                break;
+        do {
+            System.out.println("Ha seleccionado Administrar jugador/es, por favor seleccione opción a elegir:");
+            System.out.println("\t0. Salir de administración de jugadores.\n\t1. Dar de alta Jugador.\n\t2. Dar baja jugador.\n\t3. Editar jugador.\n\t4. Cargar créditos jugador.");
+            subOption = Utils.readIntInRange(0, 4, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 4.");
+            switch (subOption) {
+                case 0:
+                    System.out.println("Ha seleccionado salir de la administración de jugadores, volviendo al programa inicial.");
+                    break;
 
-            case 1:
-                System.out.println("Seleccione jugador a dar de alta: ");
-                try {
-                    arcadeRoom1.registerNewPlayer("Introduzca nombre del nuevo jugador: ", "Introduzca ID del nuevo jugador:", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                case 1:
+                    try {
+                        arcadeRoom1.registerNewPlayer("Introduzca nombre del nuevo jugador: ", "Introduzca ID del nuevo jugador:", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("Jugador registrado correctamente, esperamos que disfrute su tiempo aquí.");
+                    break;
 
-            case 2:
-                System.out.println("Seleccione jugador a dar de baja: ");
-                try {
-                    arcadeRoom1.removePlayer("Escriba nombre del jugador a eliminar: ", MAXCHARACTERSPLAYER);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                case 2:
+                    try {
+                        arcadeRoom1.removePlayer("Escriba ID del jugador a eliminar: ", MAXCHARACTERSPLAYER);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("Se ha borrado correctamente el jugador.");
+                    break;
 
-            case 3:
-                System.out.println("Seleccione jugador a editar: ");
-                try {
-                    arcadeRoom1.editPlayer("Introduzca nombre del ID del jugador a editar: ", "Introduzca nuevo nombre del jugador: ", "Introduzca nuevo ID del jugador: ", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
+                case 3:
+                    try {
+                        arcadeRoom1.editPlayer("Introduzca nombre del ID del jugador a editar: ", "Introduzca nuevo nombre del jugador: ", "Introduzca nuevo ID del jugador: ", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("Se ha editado correctamente el jugador seleccionado.");
+                    break;
 
-            default:
-                System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
-        }
+                case 4:
+                    try {
+                        String idPlayerToFind = Utils.verifyString("Introduzca ID del jugador para cargar créditos: ", MAXCHARACTERSID);
+                        players[arcadeRoom1.findPlayerByID(idPlayerToFind)].rechargeCredits(Utils.readIntInRange(minCredits, maxCredits, "Introduzca créditos a recargar: ", "Ha introducido un número de créditos inválido, inténtelo de nuevo."));
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    System.out.println("Créditos cargados correctamente. Disfrute las partidas. :)");
+                    break;
+
+                default:
+                    System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
+            }
+        } while (subOption != 0);
+    }
+
+    private static void subMenuMachine(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, int maxYear, ArcadeMachine[] arcadeMachines) {
+        int subOption = 0;
+        do {
+            System.out.println("Ha seleccionado Administrar máquina/s, por favor seleccione opción a elegir:");
+            System.out.println("\t0. Salir de administración de máquinas.\n\t1. Dar de alta Máquina Arcade.\n\t2. Dar baja Máquina Arcade.\n\t3. Editar Máquina Arcade.\n\t4. Realizar mantenimiento a una máquina.");
+            subOption = Utils.readIntInRange(0, 4, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 4.");
+            switch (subOption) {
+                case 0:
+                    System.out.println("Ha seleccionado salir de la administración de máquinas, volviendo al programa inicial.");
+                    break;
+
+                case 1:
+                    try {
+                        arcadeRoom1.registerNewMachine("Introduzca nombre de la máquina a dar de alta.", "Introduzca nombre del género de la máquina.", MAXCHARACTERSARCADEMACHINE);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        arcadeRoom1.removeMachine("Seleccione nombre de máquina a dar de baja: ", MAXCHARACTERSARCADEMACHINE);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    try {
+                        arcadeRoom1.editMachine("Introduzca nombre de la máquina a editar: ", "Introduzca nombre modificado de la máquina", "Introduzca nombre del género a correjir: ", maxYear, "Indique año de lanzamiento de la máquina.", MAXCHARACTERSARCADEMACHINE, 5, 30, "Introduzca precio de la máquina en créditos.", "El precio debe estar entre 5 y 30.");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                case 4:
+                    try {
+                        String nameMachineMaintenance = Utils.verifyString("Introduzca nombre de la máquina para realizar su mantenimiento:", MAXCHARACTERSARCADEMACHINE);
+                        arcadeMachines[arcadeRoom1.findMachineByName(nameMachineMaintenance)].modifyActivationMachine(true);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                default:
+                    System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
+            }
+        } while (subOption != 0);
+    }
+
+    private static void subMenuStatistics(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, ArcadeMachine[] arcadeMachines) {
+        int subOption = 0;
+        do {
+            System.out.println("Ha seleccionado Estadísticas y Listados, por favor seleccione opción a elegir:");
+            System.out.println("\t0. Salir de estadísticas y listados.\n\t1. Listado de jugadores.\n\t2. Listado máquinas.\n\t3. Listado máquinas ACTIVAS." +
+                    "\n\t4. Ver jugador más activo.\n\t5. Ver máquina más jugada.\n\t6. Ver ranking de una máquina a seleccionar.");
+            subOption = Utils.readIntInRange(0, 6, "Introduzca opción a elegir: ", "Debe introducir un número entre 0 y 6.");
+            switch (subOption) {
+                case 0:
+                    System.out.println("Ha seleccionado salir de Estadísticas y Listados, volviendo al programa inicial.");
+                    break;
+
+                case 1:
+                    System.out.println("LISTADO DE JUGADORES:\n" + arcadeRoom1.listPlayers());
+                    break;
+
+                case 2:
+                    System.out.println("LISTADO DE MÁQUINAS:\n" + arcadeRoom1.listMachines());
+                    break;
+
+                case 3:
+                    System.out.println("LISTADO DE MÁQUINAS ACTIVAS:\n" + arcadeRoom1.listActiveMachines());
+                    break;
+
+                case 4:
+                    System.out.println("JUGADOR MÁS ACTIVO:\n" + arcadeRoom1.mostActivePlayer());
+                    break;
+
+                case 5:
+                    System.out.println("MÁQUINA MÁS ACTIVA:\n" + arcadeRoom1.mostActiveMachine());
+                    break;
+
+                case 6:
+                    try {
+                        String nameMachineRanking = Utils.verifyString("Introduzca nombre máquina para ver el ranking: ", MAXCHARACTERSARCADEMACHINE);
+                        arcadeMachines[arcadeRoom1.findMachineByName(nameMachineRanking)].getRankingScore();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+
+                default:
+                    System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
+            }
+        } while (subOption != 0);
     }
 }
+
+
