@@ -3,7 +3,6 @@ package model;
 import utils.Utils;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class ArcadeMachine {
     private String name;
@@ -13,18 +12,34 @@ public class ArcadeMachine {
     private int timesPlayed;
     private int[] rankingScore;
     private Player[] bestPlayers;
+    private int releasedYear;
+    private String developer;
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
         this.activated = true;
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = new Player[3];
+        this.bestPlayers = null;
+        this.releasedYear = releasedYear;
+         this.developer = developer;
     }
 
-    public ArcadeMachine(){
+    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore, Player[] bestPlayers, int releasedYear, String developer) {
+        this.name = name;
+        this.genre = genre;
+        this.pricePerPlay = pricePerPlay;
+        this.activated = true;
+        this.timesPlayed = 0;
+        this.rankingScore = new int[]{0, 0, 0};
+        this.bestPlayers = null;
+        this.releasedYear = releasedYear;
+        this.developer = developer;
+    }
+
+    public ArcadeMachine() {
         this.name = "Máquina desconocida";
         this.genre = "Género sin asignar";
         this.pricePerPlay = 0;
@@ -32,6 +47,8 @@ public class ArcadeMachine {
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
         this.bestPlayers = null;
+        this.releasedYear = 1970;
+        this.developer = "Unknown developer";
     }
 
     public void setName(String name) {
@@ -62,7 +79,7 @@ public class ArcadeMachine {
         this.activated = activated;
     }
 
-    public boolean IsActivated() {
+    public boolean isActivated() {
         return activated;
     }
 
@@ -74,48 +91,28 @@ public class ArcadeMachine {
         return this.rankingScore;
     }
 
-    public Player[] getBestPlayers() {
-        return this.bestPlayers;
-    }
-
-    //TEMPORAL BORRALO LUEGO BURRO!!!!!!
-    public void setTimesPlayed(int timesPlayed){
-        this.timesPlayed=timesPlayed;
-    }
-    //TEMPORAL BORRALO LUEGO BURRO!!!!!!
-    public void setRankingScore(int[] rankingScore) {
-        this.rankingScore = rankingScore;
-    }
-
-    /**
-     * Función que modifica la activación de la máquina si ya estaba en el mismo estado seleccionado, lanza excepción.
-     * @throws Exception Excepción lanzada en caso de que se seleccione la misma opción de estado de la máquina.
-     */
-    public void modifyActivationMachine(boolean state) throws Exception {
-        if(state) {
-            if (this.activated) {
-                this.activated = false;
-            } else {
-                throw new Exception("La máquina no puede desactivarse ya está desactivada.");
-            }
-        }else{
-            if (!this.activated) {
-                    this.activated = true;
-                } else {
-                    throw new Exception("La máquina no puede activarse ya está activada.");
-                }
+    public String getBestPlayers() {
+        String bestPlayerList = null;
+        for (int i = 0; i < this.bestPlayers.length; i++) {
+            bestPlayerList += (this.bestPlayers[i].getName() + ", ");
         }
+        return bestPlayerList;
+    }
+
+    //TODO: TEMPORAL BORRALO LUEGO BURRO!!!!!!
+    public void setTimesPlayed(int timesPlayed) {
+        this.timesPlayed = timesPlayed;
     }
 
     @Override
     public boolean equals(Object obj) {
         boolean isEquals = false;
-        if(this==obj) {
+        if (this == obj) {
             isEquals = true;
             // la segunda parte se podría hacer también con getclass en vez de instanceof
-        }else if(obj!=null && obj instanceof ArcadeMachine){
+        } else if (obj != null && obj instanceof ArcadeMachine) {
             ArcadeMachine anotherMachine = (ArcadeMachine) obj;
-            if(this.name.equals(anotherMachine.getName())){
+            if (this.name.equals(anotherMachine.getName())) {
                 isEquals = true;
             }
         }
@@ -124,63 +121,95 @@ public class ArcadeMachine {
 
     @Override
     public String toString() {
-        return  name +
-                ", género = " + genre +
-                ", precio para jugar = " + pricePerPlay +
-                ", está activa = " + activated +
-                ", veces que se ha jugado = " + timesPlayed +
-                ", mejores puntuaciones = " + Arrays.toString(rankingScore) +
-                ", mejores jugadores = " + //todo añadir mejores +".";
+        return "Máquina arcade" +
+                "Nombre = " + this.name +
+                ", género = " + this.genre +
+                ", precio para jugar = " + this.pricePerPlay +
+                ", está activa = " + this.activated +
+                ", veces que se ha jugado = " + this.timesPlayed +
+                ", mejores puntuaciones = " + Arrays.toString(this.rankingScore) +
+                ", mejores jugadores = " + this.getBestPlayers() +
+                ", año de lanzamiento = " + this.releasedYear +
+                "y desarrollador/a = " + this.developer + ".";
+    }
+
+    /**
+     * Función que modifica la activación de la máquina si ya estaba en el mismo estado seleccionado, lanza excepción.
+     *
+     * @throws Exception Excepción lanzada en caso de que se seleccione la misma opción de estado de la máquina.
+     */
+    public void modifyActivationMachine(boolean state) throws Exception {
+        if (state) {
+            if (this.activated) {
+                this.activated = false;
+            } else {
+                throw new Exception("Error, la máquina no puede desactivarse ya está desactivada.");
+            }
+        } else {
+            if (!this.activated) {
+                this.activated = true;
+            } else {
+                throw new Exception("Error, la máquina no puede activarse ya está activada.");
+            }
+        }
     }
 
     /**
      * Función para añadir 1 al número de veces que se ha jugado una máquina.
+     *
      * @throws Exception Lanza excepción si la máquina está apagada.
      */
-    public void addPlay() throws Exception {
-        if(this.activated) {
+    public void addPlayTimeToMachine() throws Exception {
+        if (this.activated) {
             this.timesPlayed++;
             if ((this.timesPlayed) % 100 == 0) {
                 modifyActivationMachine(false);
             }
-        }else{
-            throw new Exception("No se puede añadir al número de veces jugadas estando apagada la máquina.");
+        } else {
+            throw new Exception("Error, no se puede añadir al número de veces jugadas estando apagada la máquina.");
         }
     }
 
-    public boolean storeScore(Player challenger, int score){
+    public boolean storeScore(Player challenger, int score) {
         boolean foundScore = false;
-        Player temporalPlayer = new Player();
-        int temporalScore = 0;
-        for (int i = 0; i < this.rankingScore.length; i++) {
+        //TODO: Añadir para array mayor de 3: Player aux = new Player();
+        for (int i = 0; i < 3; i++) {
             if (!foundScore && score > rankingScore[0]) {
                 score = rankingScore[0];
                 foundScore = true;
 
-            } else if (!foundScore && score > rankingScore[i]) {
-                temporalScore = rankingScore[i];
-                temporalPlayer = this.bestPlayers[i];
-                score = rankingScore[i];
-                this.bestPlayers[i] = challenger;
+            } else if (!foundScore && score > rankingScore[1]) {
+                rankingScore[1] = rankingScore[2];
+                this.bestPlayers[1] = this.bestPlayers[2];
+                score = rankingScore[1];
+                this.bestPlayers[1] = challenger;
+                foundScore = true;
+
+            } else if (!foundScore && score > rankingScore[2]) {
+                score = rankingScore[2];
                 foundScore = true;
             }
         }
         return foundScore;
     }
 
-    public void showBestPlayers(){
-        for (int i = 0; i < this.bestPlayers.length; i++) {
-            this.bestPlayers[i].getName();
-        }
-    }
-
-    public void playMachine(){
+    public int playMachine(Player activePlayer) throws Exception {
         final int MAXSCORE = 9999;
         int score = Utils.genRandomNumber(MAXSCORE);
-        try{
-            this.addPlay();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        if (this.isActivated()) {
+            //TODO: CONSULTAR SI ES POSIBLE EN UN TRY COMPROBAR DOS MÉTODOS DIFERENTES
+            try {
+                this.addPlayTimeToMachine();
+                activePlayer.spendCredits(this.pricePerPlay);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            activePlayer.incrementTimesArcadePlayed();
+            this.storeScore(activePlayer, score);
+
+        } else {
+            throw new Exception("Error, no se puede jugar la máquina está desactivada, por favor actívela antes de iniciar partida.");
         }
+        return score;
     }
 }

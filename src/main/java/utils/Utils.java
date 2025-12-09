@@ -61,6 +61,14 @@ public class Utils {
         return result;
     }
 
+    public static String verifyString(int characterCount) throws Exception {
+        Scanner keyboard = new Scanner(System.in);
+        String textToVerify = keyboard.next();
+        if (textToVerify.length() > characterCount){
+            throw new Exception("Error, ha excedido el número de carácteres máximo.");
+        }
+        return textToVerify;
+    }
 
     public static boolean testInRange(int min, int max, int numberToVerify) {
         boolean inRange = false;
@@ -72,14 +80,20 @@ public class Utils {
         return inRange;
     }
 
-    public static int genRandomNumber (int max){
-        int randomNumber = (int) (Math.random()* (max+1));
+    public static int genRandomNumber(int max) {
+        int randomNumber = (int) (Math.random() * (max + 1));
         return randomNumber;
     }
 
-    public void moveValues(int[] array, int position){
-        for (int i = position; i < array.length; i++) {
-            array[i] = array[i+1];
+    //TODO: Modificar función para desplazar valores array.
+    public int[] moveValues(int[] array, int position) {
+        int[] copy = new int[array.length];
+        if (position > array.length) {
+
         }
+        for (int i = position; i < array.length; i++) {
+
+        }
+        return copy;
     }
 }
