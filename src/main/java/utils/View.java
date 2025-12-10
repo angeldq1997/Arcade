@@ -212,7 +212,7 @@ public class View {
                 case 6:
                     try {
                         String nameMachineRanking = Utils.verifyString("Introduzca nombre máquina para ver el ranking: ", MAXCHARACTERSARCADEMACHINE);
-                        arcadeRoom1.getArcadeMachines()[arcadeRoom1.findMachineByName(nameMachineRanking)].getRankingScore();
+                        System.out.println(arcadeRoom1.getArcadeMachines()[arcadeRoom1.findMachineByName(nameMachineRanking)].getRankingScore());
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }

@@ -197,10 +197,10 @@ public class ArcadeRoom {
      * @return Devuelve una cadena con todos los jugadores de una arcade.
      */
     public String listPlayers() {
-        String playerList = null;
+        String playerList = "Los jugadores de la sala son los siguientes: ";
         for (int i = 0; i < this.players.length; i++) {
             if(this.players[i] !=null) {
-                playerList += (this.players[i].getName() + " ");
+                playerList += (this.players[i].getName() + " | ");
             }
         }
         return playerList;
@@ -211,7 +211,7 @@ public class ArcadeRoom {
      * @return Devuelve una cadena con todas las máquinas de una sala recreativa.
      */
     public String listMachines() {
-        String machineList = null;
+        String machineList = "Las máquinas son: ";
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             if(this.arcadeMachines[i] !=null) {
                 machineList += (this.arcadeMachines[i].getName() + " ");
@@ -225,10 +225,10 @@ public class ArcadeRoom {
      * @return Devuelve una cadena con las máquinas activas.
      */
     public String listActiveMachines() {
-        String activeMachineList = null;
+        String activeMachineList = "Las máquinas activas son: ";
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             if (this.arcadeMachines[i].isActivated()) {
-                activeMachineList += (this.arcadeMachines[i].getName() + " ");
+                activeMachineList += (this.arcadeMachines[i].getName() + " | ");
             }
         }
         return activeMachineList;
@@ -239,10 +239,10 @@ public class ArcadeRoom {
      * @return Devuelve el objeto jugador que más veces ha usado una recreativa.
      */
     public Player mostActivePlayer() {
-        Player mostActivePlayer = null;
+        Player mostActivePlayer = new Player();
         int arcadesPlayed = 0;
         for (int i = 0; i < this.players.length; i++) {
-            if (this.players[i].getGamesPlayed() > arcadesPlayed) {
+            if (this.players[i] != null && this.players[i].getGamesPlayed() > arcadesPlayed) {
                 arcadesPlayed = this.players[i].getGamesPlayed();
                 mostActivePlayer = this.players[i];
             }
@@ -255,10 +255,10 @@ public class ArcadeRoom {
      * @return El objeto máquina arcade que más han jugado.
      */
     public ArcadeMachine mostActiveMachine() {
-        ArcadeMachine mostActiveMachine = null;
+        ArcadeMachine mostActiveMachine = new ArcadeMachine();
         int arcadePlayedRuns = 0;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
-            if (this.arcadeMachines[i].getTimesPlayed() > arcadePlayedRuns) {
+            if (this.arcadeMachines[i] != null && this.arcadeMachines[i].getTimesPlayed() > arcadePlayedRuns) {
                 arcadePlayedRuns = this.arcadeMachines[i].getTimesPlayed();
                 mostActiveMachine = this.arcadeMachines[i];
             }

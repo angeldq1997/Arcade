@@ -38,17 +38,23 @@ public class Main {
         Player player4 = new Player("Phoenix Wright", "33333333A", 0, 40);
         Player player5 = new Player("Dolores", "55555555A", 50, 99);
 
-        ArcadeMachine arcadeMachine1 = new ArcadeMachine("Space Invaders", "Shoot' em Up", PRICEOLDMACHINES, 1978, "Taito");
-        ArcadeMachine arcadeMachine2 = new ArcadeMachine("Street Fighter II", "Lucha", VERSUSORCOOPPRICE, 1991, "Capcom");
-        ArcadeMachine arcadeMachine3 = new ArcadeMachine("Metal Slug", "Run and gun", VERSUSORCOOPPRICE, 1996, "Nazca Corporation");
-        ArcadeMachine arcadeMachine4 = new ArcadeMachine("Pac-Man", "Laberinto", DELUXEPRICE, 1980, "Namco");
-        ArcadeMachine arcadeMachine5 = new ArcadeMachine("Parodius", "Shoot' em Up", STANDARDPRICE, 1990,"Konami");
-        ArcadeMachine arcadeMachine6 = new ArcadeMachine("Donkey Kong", "Plataformas", DELUXEPRICE, 1981,"Nintendo R&D1");
-        ArcadeMachine arcadeMachine7 = new ArcadeMachine("Breakout", "Acción", LOWPRICE, 1976, "Atari");
+        int[] ranking = new int[]{500, 400, 300};
+        int[] ranking2 = new int[]{1000, 600, 400};
+        int[] ranking3 = new int[]{9000, 7000, 2200};
+
+        Player[] bestPlayers = new Player[]{player5, player4, player1};
+
+        ArcadeMachine arcadeMachine1 = new ArcadeMachine("Space Invaders", "Shoot' em Up", PRICEOLDMACHINES, 10, ranking, bestPlayers,1978, "Taito");
+        ArcadeMachine arcadeMachine2 = new ArcadeMachine("Street Fighter II", "Lucha", VERSUSORCOOPPRICE, 20, ranking,  bestPlayers,1991, "Capcom");
+        ArcadeMachine arcadeMachine3 = new ArcadeMachine("Metal Slug", "Run and gun", VERSUSORCOOPPRICE, 15, ranking,  bestPlayers,1996, "Nazca Corporation");
+        ArcadeMachine arcadeMachine4 = new ArcadeMachine("Pac-Man", "Laberinto", DELUXEPRICE, 50, ranking3,  bestPlayers,1980, "Namco");
+        ArcadeMachine arcadeMachine5 = new ArcadeMachine("Parodius", "Shoot' em Up", STANDARDPRICE, 5, ranking2,  bestPlayers,1990,"Konami");
+        ArcadeMachine arcadeMachine6 = new ArcadeMachine("Donkey Kong", "Plataformas", DELUXEPRICE, 12, ranking2,  bestPlayers,1981,"Nintendo R&D1");
+        ArcadeMachine arcadeMachine7 = new ArcadeMachine("Breakout", "Acción", LOWPRICE, 0, ranking2,  bestPlayers,1976, "Atari");
 
         //INICIALIZACIÓN DE ARRAY DE JUGADORES Y MÁQUINAS ARCADE.
-        Player[] players = {player1, player2, player3, player4, null, null, null, null, null, null};
-        ArcadeMachine[] arcadeMachinesInRoom = {arcadeMachine1, arcadeMachine2, arcadeMachine3, arcadeMachine4, arcadeMachine5, arcadeMachine6, null, null, null, null};
+        Player[] players = {player1, player2, player3, player4, player5, null, null, null, null, null};
+        ArcadeMachine[] arcadeMachinesInRoom = {arcadeMachine1, arcadeMachine2, arcadeMachine3, arcadeMachine4, arcadeMachine5, arcadeMachine6, arcadeMachine7, null, null, null};
 
         //Creación de sala recreativa con los arrays anteriores:
         ArcadeRoom arcadeRoom1 = new ArcadeRoom(players, arcadeMachinesInRoom);

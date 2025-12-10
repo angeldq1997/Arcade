@@ -15,26 +15,26 @@ public class ArcadeMachine {
     private int releasedYear;
     private String developer;
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay, int releasedYear, String developer) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, int timesPlayed, int[] rankingScore, Player[] bestPlayers,int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
         this.activated = true;
-        this.timesPlayed = 0;
-        this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = null;
+        this.timesPlayed = timesPlayed;
+        this.rankingScore = rankingScore;
+        this.bestPlayers = bestPlayers;
         this.releasedYear = releasedYear;
          this.developer = developer;
     }
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int releasedYear, String developer) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore,int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
         this.activated = activated;
         this.timesPlayed = timesPlayed;
-        this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = new Player[]{null, null, null};
+        this.rankingScore = rankingScore;
+        this.bestPlayers = new Player[3];
         this.releasedYear = releasedYear;
         this.developer = developer;
     }
@@ -46,7 +46,7 @@ public class ArcadeMachine {
         this.activated = false;
         this.timesPlayed = 0;
         this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = null;
+        this.bestPlayers = new Player[3];
         this.releasedYear = 1970;
         this.developer = "Unknown developer";
     }
@@ -83,14 +83,22 @@ public class ArcadeMachine {
         return this.timesPlayed;
     }
 
-    public int[] getRankingScore() {
-        return this.rankingScore;
+    public String getRankingScore() {
+        String rankingScore = "Ranking de "+ this.getName() +": ";
+        for (int i = 0; i < this.rankingScore.length; i++) {
+            if(this.rankingScore[i] != 0 && this.bestPlayers[i] != null){
+                rankingScore += this.rankingScore[i] + " por: "+ this.bestPlayers[i];
+            }
+        }
+        return rankingScore;
     }
 
     public String getBestPlayers() {
-        String bestPlayerList = null;
+        String bestPlayerList = "";
         for (int i = 0; i < this.bestPlayers.length; i++) {
-            bestPlayerList += (this.bestPlayers[i].getName() + ", ");
+            if(this.bestPlayers[i] != null) {
+                bestPlayerList += this.bestPlayers[i].getName() + " | ";
+            }
         }
         return bestPlayerList;
     }
@@ -134,7 +142,7 @@ public class ArcadeMachine {
                 ", precio para jugar = " + this.pricePerPlay +
                 ", está activa = " + this.activated +
                 ", veces que se ha jugado = " + this.timesPlayed +
-                ", mejores puntuaciones = " + Arrays.toString(this.rankingScore) +
+                ", mejores puntuaciones = " + this.getRankingScore() +
                 ", mejores jugadores = " + this.getBestPlayers() +
                 ", año de lanzamiento = " + this.releasedYear +
                 "y desarrollador/a = " + this.developer + ".";

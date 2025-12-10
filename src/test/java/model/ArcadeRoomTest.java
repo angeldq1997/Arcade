@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArcadeRoomTest {
 
-    // No consigo definir la sala recreativa para hacer los tests
     static ArcadeRoom arcadeRoomTest = new ArcadeRoom();
 
     @BeforeAll
     public static void setUpClass(){
-        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 1978, "Taito");
+        int[] ranking = new int[]{200, 100, 0};
+        Player player1 = new Player("María Luisa", "32027371A", 100, 10);
+        Player player4 = new Player("Phoenix Wright", "33333333A", 0, 40);
+        Player player5 = new Player("Dolores", "55555555A", 50, 99);
+        Player[] bestPlayers = new Player[]{player5, player4, player1};
+        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 10, ranking, bestPlayers,1978, "Taito");
         Player testPlayer = new Player("a", "a", 0, 0);
         Player[] players = {testPlayer};
         ArcadeMachine[] arcadeMachines = {testArcadeMachine};
@@ -21,7 +25,12 @@ class ArcadeRoomTest {
 
     @Test
     void playMachine() throws Exception {
-        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 1978, "Taito");
+        int[] ranking = new int[]{200, 100, 0};
+        Player player1 = new Player("María Luisa", "32027371A", 100, 10);
+        Player player4 = new Player("Phoenix Wright", "33333333A", 0, 40);
+        Player player5 = new Player("Dolores", "55555555A", 50, 99);
+        Player[] bestPlayers = new Player[]{player5, player4, player1};
+        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 10, ranking, bestPlayers,1978, "Taito");
         Player testPlayer = new Player("a", "a", 0, 0);
         Player[] players = {testPlayer};
         ArcadeMachine[] arcadeMachines = {testArcadeMachine};
@@ -34,7 +43,12 @@ class ArcadeRoomTest {
 
     @Test
     void cantPlayMachineNotEnoughCredits() throws Exception {
-        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 1978, "Taito");
+        int[] ranking = new int[]{200, 100, 0};
+        Player player1 = new Player("María Luisa", "32027371A", 100, 10);
+        Player player4 = new Player("Phoenix Wright", "33333333A", 0, 40);
+        Player player5 = new Player("Dolores", "55555555A", 50, 99);
+        Player[] bestPlayers = new Player[]{player5, player4, player1};
+        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 10, ranking, bestPlayers,1978, "Taito");
         Player testPlayer = new Player("a", "a", 0, 0);
         Player[] players = {testPlayer};
         ArcadeMachine[] arcadeMachines = {testArcadeMachine};

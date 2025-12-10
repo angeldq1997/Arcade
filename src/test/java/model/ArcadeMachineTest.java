@@ -8,13 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArcadeMachineTest {
 
     // Definimos el objeto para usarlo en todos los tests
-    static ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, true, 0,1978, "Taito");
-    static ArcadeMachine testArcadeMachine2 = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, true, 99,1978, "Taito");
 
-    @BeforeAll
-    public static void setUpClass(){
-        ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, true, 0,1978, "Taito");
-    }
+    private Player player1 = new Player("María Luisa", "32027371A", 100, 10);
+    private Player player4 = new Player("Phoenix Wright", "33333333A", 0, 40);
+    private Player player5 = new Player("Dolores", "55555555A", 50, 99);
+    private int[] ranking = new int[]{200, 100, 0};
+    private Player[] bestPlayers = new Player[]{player5, player4, player1};
+    private ArcadeMachine testArcadeMachine = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 10, ranking, bestPlayers,1978, "Taito");
+    private ArcadeMachine testArcadeMachine2 = new ArcadeMachine("Space Invaders", "Shoot' em Up", 10, 10, ranking, bestPlayers,1978, "Taito");
 
     @Test
     void modifyActivationMachine() throws Exception {
