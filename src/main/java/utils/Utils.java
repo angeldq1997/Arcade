@@ -1,5 +1,8 @@
 package utils;
 
+import model.ArcadeMachine;
+import model.Player;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -37,6 +40,7 @@ public class Utils {
      * Lee un número entero introducido por el usuario y valida que esté dentro de un rango
      * específico definido por min y max.
      * Si el número está fuera del rango, se muestra un mensaje de aviso y se vuelve a solicitar la entrada.
+     *
      * @param min      valor mínimo permitido (incluido)
      * @param max      valor máximo permitido (incluido)
      * @param msn      mensaje que se muestra para pedir el número
@@ -60,12 +64,13 @@ public class Utils {
 
     /**
      * Función para verificar una cadena, si excede un número de carácteres concreto salta excepción.
-     * @param message Mensaje a introducir antes de pedir la cadena concreta, para especificar de que se trata.
+     *
+     * @param message        Mensaje a introducir antes de pedir la cadena concreta, para especificar de que se trata.
      * @param characterCount Número máximo de carácteres que no debe exceder la cadena.
      * @return La cadena ya verificada.
      * @throws Exception Una excepción si la cadena está vacía o si excede el número de carácteres.
      */
-    public static String verifyString(String message,int characterCount) throws Exception {
+    public static String verifyString(String message, int characterCount) throws Exception {
         Scanner keyboard = new Scanner(System.in);
         String textToVerify = "";
         boolean isValid = false;
@@ -78,12 +83,13 @@ public class Utils {
                 throw new Exception("Error, ha introducido un texto vacío.");
             }
             isValid = true;
-        }while(!isValid);
+        } while (!isValid);
         return textToVerify;
     }
 
     /**
      * Función para generar un número aleatorio desde 0 hasta el máximo indicado.
+     *
      * @param max El entero máximo indicado como límite del rango del aleatorio.
      * @return El número aleatorio generado.
      */
@@ -94,12 +100,13 @@ public class Utils {
 
     /**
      * Función que comprueba un entero en un rango concreto, devuelve false si está fuera del rango y true si está dentro.
-     * @param min Mínimo a introducir para el rango.
-     * @param max Máximo a introducir para el rango.
+     *
+     * @param min           Mínimo a introducir para el rango.
+     * @param max           Máximo a introducir para el rango.
      * @param numberToCheck Número a comprobar dentro del rango.
      * @return True si está dentro y false si está fuera.
      */
-    public static boolean verifyInRange(int min, int max, int numberToCheck){
+    public static boolean verifyInRange(int min, int max, int numberToCheck) {
         boolean isInRange = false;
         if (numberToCheck >= min && numberToCheck <= max) {
             isInRange = true;
@@ -111,13 +118,14 @@ public class Utils {
 
     /**
      * Función que comprueba si hay un objeto nulo dentro de un array concreto.
+     *
      * @param arrayToCheck Array a comprobar.
      * @return True si tiene un nulo y false si no tiene ninguno.
      */
-    public static boolean isANullInArray(Object[] arrayToCheck){
+    public static boolean isANullInArray(Object[] arrayToCheck) {
         boolean thereIsAtLeastANull = false;
         for (int i = 0; i < arrayToCheck.length; i++) {
-            if(arrayToCheck[i] == null){
+            if (arrayToCheck[i] == null) {
                 thereIsAtLeastANull = true;
             }
         }
@@ -125,7 +133,7 @@ public class Utils {
     }
 
     //TODO: Modificar función para desplazar valores array.
-    public int[] moveValues(int[] array, int position) {
+    public static int[] moveValues(int[] array, int position) {
         int[] copy = new int[array.length];
         if (position > array.length) {
 
@@ -134,5 +142,27 @@ public class Utils {
 
         }
         return copy;
+    }
+
+    public static Player definePlayer(String messageName, String messageId, int maxCharacterName, int maxCharacterId) throws Exception {
+        Player newPlayerDefined = new Player();
+        newPlayerDefined.setName(Utils.verifyString(messageName, maxCharacterName));
+        newPlayerDefined.setId(Utils.verifyString(messageId, maxCharacterId));
+        return newPlayerDefined;
+    }
+
+    public static ArcadeMachine defineMachine(int MAXCHARACTERNAMEMACHINE,int maxYear, int minPrice, int maxPrice) throws Exception {
+        ArcadeMachine newArcadeDefined = new ArcadeMachine();
+        newArcadeDefined.setName(Utils.verifyString("Introduzca nombre para la nueva máquina arcade: ", MAXCHARACTERNAMEMACHINE));
+        newArcadeDefined.setGenre(Utils.verifyString("Introduzca género de la arcade: ", MAXCHARACTERNAMEMACHINE));
+        newArcadeDefined.setDeveloper(Utils.verifyString("Introduzca nombre de la desarrolladora de la arcade: ", MAXCHARACTERNAMEMACHINE));
+        newArcadeDefined.setReleasedYear(Utils.readIntInRange(1960, maxYear, "Introduce año de lanzamiento: ", "Error, debe introducir un año de lanzamiento entre 1960 y "+maxYear));
+        newArcadeDefined.setPricePerPlay(Utils.readIntInRange(minPrice, maxPrice, "Introduce precio créditos: ", "Error, los créditos introducidos no se encuentran entre: "+minPrice+ " y "+maxPrice));
+        return newArcadeDefined;
+    }
+
+    public static void modifyPlayer(Player playerToEdit, String messageId, String messageName, int MAXCHARACTERSID, int MAXCHARACTERSNAME) throws Exception {
+        playerToEdit.setName(Utils.verifyString(messageName, MAXCHARACTERSNAME));
+        playerToEdit.setId(Utils.verifyString(messageId, MAXCHARACTERSID));
     }
 }

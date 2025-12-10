@@ -27,14 +27,14 @@ public class ArcadeMachine {
          this.developer = developer;
     }
 
-    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int[] rankingScore, Player[] bestPlayers, int releasedYear, String developer) {
+    public ArcadeMachine(String name, String genre, int pricePerPlay, boolean activated, int timesPlayed, int releasedYear, String developer) {
         this.name = name;
         this.genre = genre;
         this.pricePerPlay = pricePerPlay;
-        this.activated = true;
-        this.timesPlayed = 0;
+        this.activated = activated;
+        this.timesPlayed = timesPlayed;
         this.rankingScore = new int[]{0, 0, 0};
-        this.bestPlayers = null;
+        this.bestPlayers = new Player[]{null, null, null};
         this.releasedYear = releasedYear;
         this.developer = developer;
     }
@@ -109,11 +109,6 @@ public class ArcadeMachine {
 
     public void setDeveloper(String developer) {
         this.developer = developer;
-    }
-
-    //TODO: TEMPORAL BORRALO LUEGO BURRO!!!!!!
-    public void setTimesPlayed(int timesPlayed) {
-        this.timesPlayed = timesPlayed;
     }
 
     @Override

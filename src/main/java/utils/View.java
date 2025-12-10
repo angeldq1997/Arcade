@@ -13,10 +13,10 @@ public class View {
      * @param MAXCHARACTERSARCADEMACHINE Número de carácteres máximo de la máquina arcade.
      * @param MAXYEAR Año máximo permitido cuando se creó la máquina recreativa concreta.
      * @param MAXSCORE Puntuación máxima que puede conseguir un jugador.
-     * @param maxCredits Créditos máximos que puede ingresar un jugador.
-     * @param minCredits Créditos mínimos que debe ingresar el jugador.
+     * @param MAXCREDITS Créditos máximos que puede ingresar un jugador.
+     * @param MINCREDITS Créditos mínimos que debe ingresar el jugador.
      */
-    public static void principalMenu(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int maxCredits, int minCredits) {
+    public static void principalMenu(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int MAXCREDITS, int MINCREDITS, int MINPRICE, int MAXPRICE) {
         int option = 0;
         do {
             System.out.println("\n--- MENÚ RECREATIVAS ARCADIA ---\n\t0. SALIR.\n\t1. JUGAR UNA PARTIDA.\n\t2. ADMINISTRAR JUGADOR/ES.\n\t3. ADMINISTRAR MÁQUINA/S.\n\t4. ESTADÍSTICAS Y LISTADO.");
@@ -36,15 +36,15 @@ public class View {
                     break;
 
                 case 2:
-                    subMenuPlayer(arcadeRoom1, MAXCHARACTERSPLAYER, MAXCHARACTERSID, minCredits, maxCredits);
+                    subMenuPlayer(arcadeRoom1, MAXCHARACTERSPLAYER, MAXCHARACTERSID, MINCREDITS, MAXCREDITS);
                     break;
 
                 case 3:
-                    subMenuMachine(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, MAXYEAR);
+                    subMenuMachine(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MINPRICE, MAXPRICE);
                     break;
 
                 case 4:
-                    subMenuStatistics(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, arcadeRoom1.getArcadeMachines());
+                    subMenuStatistics(arcadeRoom1, MAXCHARACTERSARCADEMACHINE);
                     break;
                 default:
                     System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
@@ -73,7 +73,8 @@ public class View {
 
                 case 1:
                     try {
-                        arcadeRoom1.registerNewPlayer("Introduzca nombre del nuevo jugador: ", "Introduzca ID del nuevo jugador:", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
+                        Player definedPlayer = Utils.definePlayer("Introduzca nombre del nuevo jugador: ", "Introduzca ID del nuevo jugador:", MAXCHARACTERSPLAYER, MAXCHARACTERSID);
+                        arcadeRoom1.registerNewPlayer(definedPlayer);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -120,7 +121,7 @@ public class View {
      * @param MAXCHARACTERSARCADEMACHINE Número máximo de carácteres de la máquina arcade.
      * @param maxYear Número máximo del año en el que se creó la máquina.
      */
-    private static void subMenuMachine(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, int maxYear) {
+    private static void subMenuMachine(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, int maxYear, int minPrice, int maxPrice) {
         int subOption = 0;
         do {
             System.out.println("Ha seleccionado Administrar máquina/s, por favor seleccione opción a elegir:");
@@ -133,8 +134,8 @@ public class View {
 
                 case 1:
                     try {
-
-                        arcadeRoom1.registerNewMachine();
+                        ArcadeMachine definedArcadeMachine = Utils.defineMachine(MAXCHARACTERSARCADEMACHINE, maxYear, minPrice, maxPrice);
+                        arcadeRoom1.registerNewMachine(definedArcadeMachine);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -146,11 +147,13 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    System.out.println("Se ha borrado satisfactoriamente la máquina seleccionada.");
                     break;
 
                 case 3:
                     try {
-                        arcadeRoom1.editMachine("Introduzca nombre de la máquina a editar: ", "Introduzca nombre modificado de la máquina", "Introduzca nombre del género a correjir: ", maxYear, "Indique año de lanzamiento de la máquina.", MAXCHARACTERSARCADEMACHINE, 5, 30, "Introduzca precio de la máquina en créditos.", "El precio debe estar entre 5 y 30.");
+                        ArcadeMachine editedMachine = Utils.defineMachine(MAXCHARACTERSARCADEMACHINE, maxYear, minPrice, maxPrice);
+                        arcadeRoom1.editMachine(editedMachine, "Introduzca nombre de la máquina a buscar", MAXCHARACTERSARCADEMACHINE);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -169,7 +172,12 @@ public class View {
         } while (subOption != 0);
     }
 
-    private static void subMenuStatistics(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, ArcadeMachine[] arcadeMachines) {
+    /**
+     * Menú para mostrar estadísticas a los usuarios.
+     * @param arcadeRoom1 Sala recreativa principal a medir.
+     * @param MAXCHARACTERSARCADEMACHINE Número máximo de carácteres del nombre de una máquina arcade.
+     */
+    private static void subMenuStatistics(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE) {
         int subOption = 0;
         do {
             System.out.println("Ha seleccionado Estadísticas y Listados, por favor seleccione opción a elegir:");

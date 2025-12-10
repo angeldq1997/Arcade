@@ -16,22 +16,24 @@ public class ArcadeRoom {
         this.arcadeMachines = arcadeMachines;
     }
 
-    public Player[] getPlayers() {
-        return this.players;
+    public ArcadeRoom() {
+        this.players = null;
+        this.arcadeMachines = null;
     }
 
-    public void setPlayers(Player[] players) {
-        this.players = players;
+    public Player[] getPlayers() {
+        return this.players;
     }
 
     public ArcadeMachine[] getArcadeMachines() {
         return this.arcadeMachines;
     }
 
-    public void setArcadeMachines(ArcadeMachine[] arcadeMachines) {
-        this.arcadeMachines = arcadeMachines;
-    }
-
+    /**
+     * Función para buscar una máquina por nombre.
+     * @param machineName Nombre de la máquina a buscar.
+     * @return Devuelve la posición de la máquina en el array de máquinas de la sala recreativa concreta.
+     */
     public int findMachineByName(String machineName) {
         boolean isMachineFound = false;
         int machinePosition = 0;
@@ -109,20 +111,16 @@ public class ArcadeRoom {
 
     /**
      * Función que permite ingresar un nuevo jugador al array.
-     * @param messageName Mensaje a mostrar antes de pedir un nombre de jugador.
-     * @param messageId Mensaje a mostrar antes de pedir un ID para el jugador.
-     * @param maxCharacterName Número máximo de caracteres para el nombre de un jugador.
-     * @param maxCharacterId Número máximo de caracteres para el ID de un jugador.
+     * @param definedPlayer Jugador definido en otra función que se inserta en el array.
      * @return True si se ha podido registrar y false si no ha podido completarse.
      * @throws Exception Lanza excepción si no se ha podido registrar al jugador.
      */
-    public boolean registerNewPlayer(String messageName, String messageId, int maxCharacterName, int maxCharacterId) throws Exception {
+    public boolean registerNewPlayer(Player definedPlayer) throws Exception {
         boolean registerSuccessful = false;
         if(Utils.isANullInArray(this.players)){
             for (int i = 0; i < this.players.length && !registerSuccessful; i++) {
                 if (players[i].getId() == "NONE" || players[i] == null) {
-                    players[i].setName(Utils.verifyString(messageName, maxCharacterName));
-                    players[i].setId(Utils.verifyString(messageId, maxCharacterId));
+                    players[i] = definedPlayer;
                     registerSuccessful = true;
                 }
             }
@@ -134,22 +132,16 @@ public class ArcadeRoom {
 
     /**
      * Función que registra una máquina nueva, pidiendo al usuario su nombre, género, entre otros datos.
-     * @param messageName Mensaje a mostrar antes de pedir nombre de la máquina.
-     * @param messageGenre Mensaje a mostrar antes de pedir nombre del género al que pertenece.
-     * @param MAXCHARACTERNAMEMACHINE Número de caracteres máximo para el nombre de la máquina arcade.
+     * @param definedArcadeMachine Máquina arcade definida por otra función que se insertará en el array.
      * @return True si ha registrado la máquina correctamente y false si no ha podido.
      * @throws Exception Lanza excepción cuando está el array de máquinas completo.
      */
-    public boolean registerNewMachine(String messageName, String messageGenre, String messageDeveloper, String messageReleasedYear, int MAXCHARACTERNAMEMACHINE, int minYear, int maxYear, int minPrice, int maxPrice) throws Exception {
+    public boolean registerNewMachine(ArcadeMachine definedArcadeMachine) throws Exception {
         boolean registerSuccessful = false;
         if(Utils.isANullInArray(this.arcadeMachines)){
             for (int i = 0; i < this.arcadeMachines.length; i++) {
                 if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
-                    arcadeMachines[i].setName(Utils.verifyString(messageName, MAXCHARACTERNAMEMACHINE));
-                    arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
-                    arcadeMachines[i].setDeveloper(Utils.verifyString(messageDeveloper, MAXCHARACTERNAMEMACHINE));
-                    arcadeMachines[i].setReleasedYear(Utils.readIntInRange(minYear, maxYear, "Introduce año de lanzamiento: ", "Error, debe introducir un año de lanzamiento entre "+minYear+" y "+maxYear));
-                    arcadeMachines[i].setPricePerPlay(Utils.readIntInRange(minPrice, maxPrice, "Introduce número: ", "Error, has introducido un número incorrecto."));
+                    arcadeMachines[i] = definedArcadeMachine;
                     registerSuccessful = true;
                 }
             }
@@ -160,14 +152,14 @@ public class ArcadeRoom {
     }
 
     /**
-     *
-     * @param messageSearchIdPlayer
-     * @param messageName
-     * @param messageId
-     * @param MAXCHARACTERSNAME
-     * @param MAXCHARACTERSID
-     * @return
-     * @throws Exception
+     * Función para editar un jugador de la sala recreativa.
+     * @param messageSearchIdPlayer Mensaje a mostrar antes de buscar un ID de jugador concreto.
+     * @param messageName Mensaje a mostrar al pedir el nombre nuevo a asignar.
+     * @param messageId Mensaje a mostrar al pedir el ID nuevo a asignar.
+     * @param MAXCHARACTERSNAME Máximo número de caracteres del jugador editado.
+     * @param MAXCHARACTERSID Máximo número de caracteres del ID editado.
+     * @return True si ha podido editarse y false si no ha sido posible.
+     * @throws Exception Lanza excepción si hay un fallo al modificar el jugador.
      */
     public boolean editPlayer(String messageSearchIdPlayer, String messageName, String messageId, int MAXCHARACTERSNAME, int MAXCHARACTERSID) throws Exception {
         int playerPosition = -1;
@@ -175,28 +167,35 @@ public class ArcadeRoom {
         String idPlayerToSearch = Utils.verifyString(messageSearchIdPlayer, MAXCHARACTERSNAME);
         playerPosition = this.findPlayerByID(idPlayerToSearch);
         if (playerPosition != -1) {
-            this.players[playerPosition].setName(Utils.verifyString(messageName, MAXCHARACTERSNAME));
-            this.players[playerPosition].setId(Utils.verifyString(messageId, MAXCHARACTERSID));
+            Utils.modifyPlayer(this.players[playerPosition], messageId, messageName, MAXCHARACTERSID, MAXCHARACTERSNAME);
             editedPlayer = true;
         }
         return editedPlayer;
     }
 
-    public boolean editMachine(String messageSearchMachine, String messageName, String messageGenre, int maxYear,String messageReleaseYear, int MAXCHARACTERSMACHINE, int minPrice, int maxPrice, String messagePrice, String messageError) throws Exception {
+    /**
+     * Función que edita una máquina existente modificando sus datos.
+     * @param machineToEdit Máquina a editar.
+     * @param messageSearchMachine Mensaje para pedir nombre de la máquina a buscar.
+     * @param MAXCHARACTERSMACHINE Máximo número de caracteres que puede tener una máquina.
+     * @return Devuelve la máquina arcade ya modificada.
+     * @throws Exception Lanza excepción si no se introduce correctamente un nombre de la máquina a buscar.
+     */
+    public ArcadeMachine editMachine(ArcadeMachine machineToEdit, String messageSearchMachine, int MAXCHARACTERSMACHINE) throws Exception {
         int machinePosition = -1;
-        boolean editedMachine = false;
+        ArcadeMachine editedMachine = new ArcadeMachine();
         String nameMachineToSearch = Utils.verifyString(messageSearchMachine, MAXCHARACTERSMACHINE);
         machinePosition = this.findMachineByName(nameMachineToSearch);
         if (machinePosition != -1) {
-            this.arcadeMachines[machinePosition].setName(Utils.verifyString(messageName, MAXCHARACTERSMACHINE));
-            this.arcadeMachines[machinePosition].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERSMACHINE));
-            this.arcadeMachines[machinePosition].setReleasedYear(Utils.readIntInRange(1950, maxYear, messageReleaseYear, messageError));
-            this.arcadeMachines[machinePosition].setPricePerPlay(Utils.readIntInRange(minPrice, maxPrice, messagePrice, messageError));
-            editedMachine = true;
+           editedMachine = machineToEdit;
         }
         return editedMachine;
     }
 
+    /**
+     * Función que muestra los jugadores de una arcade.
+     * @return Devuelve una cadena con todos los jugadores de una arcade.
+     */
     public String listPlayers() {
         String playerList = null;
         for (int i = 0; i < this.players.length; i++) {
@@ -207,6 +206,10 @@ public class ArcadeRoom {
         return playerList;
     }
 
+    /**
+     * Función que muestra una lista de máquinas activas o no.
+     * @return Devuelve una cadena con todas las máquinas de una sala recreativa.
+     */
     public String listMachines() {
         String machineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
@@ -217,6 +220,10 @@ public class ArcadeRoom {
         return machineList;
     }
 
+    /**
+     * Función que muestra una lista de máquinas incluyendo solo las activas.
+     * @return Devuelve una cadena con las máquinas activas.
+     */
     public String listActiveMachines() {
         String activeMachineList = null;
         for (int i = 0; i < this.arcadeMachines.length; i++) {
@@ -227,6 +234,10 @@ public class ArcadeRoom {
         return activeMachineList;
     }
 
+    /**
+     * Función que muestra el jugador más activo de la sala recreativa.
+     * @return Devuelve el objeto jugador que más veces ha usado una recreativa.
+     */
     public Player mostActivePlayer() {
         Player mostActivePlayer = null;
         int arcadesPlayed = 0;
@@ -239,6 +250,10 @@ public class ArcadeRoom {
         return mostActivePlayer;
     }
 
+    /**
+     * Función para mostrar la máquina más usada
+     * @return El objeto máquina arcade que más han jugado.
+     */
     public ArcadeMachine mostActiveMachine() {
         ArcadeMachine mostActiveMachine = null;
         int arcadePlayedRuns = 0;
@@ -251,6 +266,7 @@ public class ArcadeRoom {
         return mostActiveMachine;
     }
 
+    //NO LO HE USADO
     private boolean existPlayer(Player player) {
         boolean exist = false;
         for (int i = 0; i < this.players.length && !exist; i++) {
@@ -261,6 +277,7 @@ public class ArcadeRoom {
         return exist;
     }
 
+    //NO LO HE USADO
     private boolean existMachine(ArcadeMachine arcadeMachine) {
         boolean exist = false;
         for (int i = 0; i < this.arcadeMachines.length && !exist; i++) {
@@ -271,9 +288,19 @@ public class ArcadeRoom {
         return exist;
     }
 
-    public int playMachine(String messagePlayer, String messageMachine, int MAXSCORE, int MAXCHARACTERSID, int MAXCHARACTERSMACHINENAME) throws Exception {
+    /**
+     * Función para jugar con un jugador a una máquina concreta.
+     * @param messagePlayerId Mensaje para pedir ID del jugador que jugará.
+     * @param messageMachine Mensaje para pedir el nombre de la máquina a usar.
+     * @param MAXSCORE Puntuación máxima que puede obtener el jugador.
+     * @param MAXCHARACTERSID Máximo número de caracteres que puede tener el ID del jugador.
+     * @param MAXCHARACTERSMACHINENAME Máximo número de caracteres que puede tener la máquina.
+     * @return La puntuación obtenida.
+     * @throws Exception Lanza excepción si la máquina está desactivada.
+     */
+    public int playMachine(String messagePlayerId, String messageMachine, int MAXSCORE, int MAXCHARACTERSID, int MAXCHARACTERSMACHINENAME) throws Exception {
         int score = Utils.genRandomNumber(MAXSCORE);
-        String playerSelected = Utils.verifyString(messagePlayer, MAXCHARACTERSID);
+        String playerSelected = Utils.verifyString(messagePlayerId, MAXCHARACTERSID);
         Player activePlayer = this.players[this.findPlayerByID(playerSelected)];
 
         String machineSelected = Utils.verifyString(messageMachine, MAXCHARACTERSMACHINENAME);

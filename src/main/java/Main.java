@@ -26,6 +26,8 @@ public class Main {
         final int MAXYEAR = 2025;
         final int MINCREDITS = 1;
         final int MAXCREDITS = 1000;
+        final int MINPRICE = 5;
+        final int MAXPRICE = 30;
 
         //RELLENADO INICIAL DE DATOS ARRAY. Ya que no tenemos una forma actualmente de preservar la información con el
         //cierre y la apertura del programa.
@@ -52,6 +54,6 @@ public class Main {
         ArcadeRoom arcadeRoom1 = new ArcadeRoom(players, arcadeMachinesInRoom);
 
         //Vista del menú principal en clase View.
-        View.principalMenu(arcadeRoom1,MAXCHARACTERSPLAYER, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MAXSCORE, MINCREDITS, MAXCREDITS);
+        View.principalMenu(arcadeRoom1,MAXCHARACTERSPLAYER, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MAXSCORE, MINCREDITS, MAXCREDITS, MINPRICE, MAXPRICE);
     }
 }
