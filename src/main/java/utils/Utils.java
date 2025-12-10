@@ -37,7 +37,6 @@ public class Utils {
      * Lee un número entero introducido por el usuario y valida que esté dentro de un rango
      * específico definido por min y max.
      * Si el número está fuera del rango, se muestra un mensaje de aviso y se vuelve a solicitar la entrada.
-     *
      * @param min      valor mínimo permitido (incluido)
      * @param max      valor máximo permitido (incluido)
      * @param msn      mensaje que se muestra para pedir el número
@@ -59,6 +58,13 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Función para verificar una cadena, si excede un número de carácteres concreto salta excepción.
+     * @param message Mensaje a introducir antes de pedir la cadena concreta, para especificar de que se trata.
+     * @param characterCount Número máximo de carácteres que no debe exceder la cadena.
+     * @return La cadena ya verificada.
+     * @throws Exception Una excepción si la cadena está vacía o si excede el número de carácteres.
+     */
     public static String verifyString(String message,int characterCount) throws Exception {
         Scanner keyboard = new Scanner(System.in);
         String textToVerify = "";
@@ -76,19 +82,41 @@ public class Utils {
         return textToVerify;
     }
 
+    /**
+     * Función para generar un número aleatorio desde 0 hasta el máximo indicado.
+     * @param max El entero máximo indicado como límite del rango del aleatorio.
+     * @return El número aleatorio generado.
+     */
     public static int genRandomNumber(int max) {
         int randomNumber = (int) (Math.random() * (max + 1));
         return randomNumber;
     }
 
+    /**
+     * Función que comprueba un entero en un rango concreto, devuelve false si está fuera del rango y true si está dentro.
+     * @param min Mínimo a introducir para el rango.
+     * @param max Máximo a introducir para el rango.
+     * @param numberToCheck Número a comprobar dentro del rango.
+     * @return True si está dentro y false si está fuera.
+     */
     public static boolean verifyInRange(int min, int max, int numberToCheck){
-        boolean isInRange = true;
+        boolean isInRange = false;
         if (numberToCheck >= min && numberToCheck <= max) {
             isInRange = true;
         } else {
             isInRange = false;
         }
         return isInRange;
+    }
+
+    public static boolean isANullInArray(Object[] arrayToCheck){
+        boolean thereIsAtLeastANull = false;
+        for (int i = 0; i < arrayToCheck.length; i++) {
+            if(arrayToCheck[i] == null){
+                thereIsAtLeastANull = true;
+            }
+        }
+        return thereIsAtLeastANull;
     }
 
     //TODO: Modificar función para desplazar valores array.

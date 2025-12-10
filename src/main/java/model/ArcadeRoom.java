@@ -8,12 +8,27 @@ public class ArcadeRoom {
 
     /**
      * Constructor de sala recreativa. Requiere array de jugadores y de máquinas arcade.
-     *
      * @param players        Array de jugadores de la sala recreativa.
      * @param arcadeMachines Array de máquinas arcade de la sala recreativa.
      */
     public ArcadeRoom(Player[] players, ArcadeMachine[] arcadeMachines) {
         this.players = players;
+        this.arcadeMachines = arcadeMachines;
+    }
+
+    public Player[] getPlayers() {
+        return this.players;
+    }
+
+    public void setPlayers(Player[] players) {
+        this.players = players;
+    }
+
+    public ArcadeMachine[] getArcadeMachines() {
+        return this.arcadeMachines;
+    }
+
+    public void setArcadeMachines(ArcadeMachine[] arcadeMachines) {
         this.arcadeMachines = arcadeMachines;
     }
 
@@ -29,6 +44,12 @@ public class ArcadeRoom {
         return machinePosition;
     }
 
+    /**
+     * Función para encontrar a un jugador a partir de su ID.
+     * @param idToFind ID a buscar del jugador en el array.
+     * @return La posición del jugador en el array.
+     * @throws Exception Lanza excepción si no se encuentra al jugador con la ID introducida.
+     */
     public int findPlayerByID(String idToFind) throws Exception {
         boolean isPlayerFound = false;
         int playerPosition = -1;
@@ -44,6 +65,13 @@ public class ArcadeRoom {
         return playerPosition;
     }
 
+    /**
+     * Elimina una máquina arcade poniendola a null, para ello la busca mediante su nombre escrito por el usuario.
+     * @param message Mensaje a introducir antes de pedir el nombre de la máquina arcade.
+     * @param MAXCHARACTERSMACHINE Número máximo de caracteres que tiene una máquina.
+     * @return True si se ha podido eliminar y false, si no se ha podido.
+     * @throws Exception Lanza una excepción si se introduce un nombre no válido a buscar u otra diferente si no existe dicha máquina en el sistema.
+     */
     public boolean removeMachine(String message, int MAXCHARACTERSMACHINE) throws Exception {
         boolean removeSuccessful = false;
         int machinePosition = -1;
@@ -52,10 +80,19 @@ public class ArcadeRoom {
         if (machinePosition != -1) {
             this.arcadeMachines[machinePosition] = null;
             removeSuccessful = true;
+        } else{
+            throw new Exception("Error, ha introducido una máquina que no existe en el sistema.");
         }
         return removeSuccessful;
     }
 
+    /**
+     * Función que elimina un jugador concreto cambiando su valor a null, lo busca mediante su ID.
+     * @param message Mensaje a introducir antes de pedir el ID del jugador.
+     * @param MAXCHARACTERSPLAYER Número máximo de carácteres del jugador.
+     * @return True si se ha podido eliminar y false si no ha podido.
+     * @throws Exception Si se introduce un ID no válida o si no existe el jugador en el sistema.
+     */
     public boolean removePlayer(String message, int MAXCHARACTERSPLAYER) throws Exception {
         boolean removeSuccessful = false;
         int playerPosition = -1;
@@ -64,10 +101,21 @@ public class ArcadeRoom {
         if (playerPosition != -1) {
             this.arcadeMachines[playerPosition] = null;
             removeSuccessful = true;
+        }else{
+            throw new Exception("Error, ha introducido un ID que no existe en el sistema.");
         }
         return removeSuccessful;
     }
 
+    /**
+     * Función que permite ingresar un nuevo jugador al array.
+     * @param messageName
+     * @param messageId
+     * @param maxCharacterName
+     * @param maxCharacterId
+     * @return
+     * @throws Exception
+     */
     public boolean registerNewPlayer(String messageName, String messageId, int maxCharacterName, int maxCharacterId) throws Exception {
         boolean registerSuccessful = false;
         for (int i = 0; i < this.players.length && !registerSuccessful; i++) {

@@ -53,6 +53,6 @@ public class Main {
         ArcadeRoom arcadeRoom1 = new ArcadeRoom(players, arcadeMachinesInRoom);
 
         //Vista del menú principal en clase View.
-        View.principalMenu(arcadeRoom1, arcadeMachinesInRoom, players,MAXCHARACTERSPLAYER, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MAXSCORE, MINCREDITS, MAXCREDITS);
+        View.principalMenu(arcadeRoom1,MAXCHARACTERSPLAYER, MAXCHARACTERSID, MAXCHARACTERSARCADEMACHINE, MAXYEAR, MAXSCORE, MINCREDITS, MAXCREDITS);
     }
 }

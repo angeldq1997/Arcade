@@ -5,7 +5,18 @@ import model.ArcadeRoom;
 import model.Player;
 
 public class View {
-    public static void principalMenu(ArcadeRoom arcadeRoom1, ArcadeMachine[] arcadeMachinesInRoom, Player[] players, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int maxCredits, int minCredits) {
+    /**
+     * Menú principal con opciones que llevan a otros submenús.
+     * @param arcadeRoom1 Sala recreativa principal que contiene jugadores y máquinas recreativas.
+     * @param MAXCHARACTERSPLAYER Número de carácteres máximo del nombre del jugador.
+     * @param MAXCHARACTERSID Número de carácteres máximo de la ID del jugador.
+     * @param MAXCHARACTERSARCADEMACHINE Número de carácteres máximo de la máquina arcade.
+     * @param MAXYEAR Año máximo permitido cuando se creó la máquina recreativa concreta.
+     * @param MAXSCORE Puntuación máxima que puede conseguir un jugador.
+     * @param maxCredits Créditos máximos que puede ingresar un jugador.
+     * @param minCredits Créditos mínimos que debe ingresar el jugador.
+     */
+    public static void principalMenu(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int maxCredits, int minCredits) {
         int option = 0;
         do {
             System.out.println("\n--- MENÚ RECREATIVAS ARCADIA ---\n\t0. SALIR.\n\t1. JUGAR UNA PARTIDA.\n\t2. ADMINISTRAR JUGADOR/ES.\n\t3. ADMINISTRAR MÁQUINA/S.\n\t4. ESTADÍSTICAS Y LISTADO.");
@@ -25,15 +36,15 @@ public class View {
                     break;
 
                 case 2:
-                    subMenuPlayer(arcadeRoom1, players, MAXCHARACTERSPLAYER, MAXCHARACTERSID, minCredits, maxCredits);
+                    subMenuPlayer(arcadeRoom1, MAXCHARACTERSPLAYER, MAXCHARACTERSID, minCredits, maxCredits);
                     break;
 
                 case 3:
-                    subMenuMachine(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, MAXYEAR, arcadeMachinesInRoom);
+                    subMenuMachine(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, MAXYEAR);
                     break;
 
                 case 4:
-                    subMenuStatistics(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, arcadeMachinesInRoom);
+                    subMenuStatistics(arcadeRoom1, MAXCHARACTERSARCADEMACHINE, arcadeRoom1.getArcadeMachines());
                     break;
                 default:
                     System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
@@ -41,7 +52,15 @@ public class View {
         } while (option != 0);
     }
 
-    private static void subMenuPlayer(ArcadeRoom arcadeRoom1, Player[] players, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int minCredits, int maxCredits) {
+    /**
+     * Submenú de Jugadores con las opciones que les concierne, como dar de alta, baja, editar jugadores y cargar créditos de estos.
+     * @param arcadeRoom1 Sala recreativa principal que contiene jugadores y máquinas recreativas.
+     * @param MAXCHARACTERSPLAYER Número de carácteres máximo del nombre del jugador.
+     * @param MAXCHARACTERSID Número de carácteres máximo de la ID del jugador.
+     * @param maxCredits Créditos máximos que puede ingresar un jugador.
+     * @param minCredits Créditos mínimos que debe ingresar el jugador.
+     */
+    private static void subMenuPlayer(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int minCredits, int maxCredits) {
         int subOption = 0;
         do {
             System.out.println("Ha seleccionado Administrar jugador/es, por favor seleccione opción a elegir:");
@@ -82,7 +101,7 @@ public class View {
                 case 4:
                     try {
                         String idPlayerToFind = Utils.verifyString("Introduzca ID del jugador para cargar créditos: ", MAXCHARACTERSID);
-                        players[arcadeRoom1.findPlayerByID(idPlayerToFind)].rechargeCredits(Utils.readIntInRange(minCredits, maxCredits, "Introduzca créditos a recargar: ", "Ha introducido un número de créditos inválido, inténtelo de nuevo."));
+                        arcadeRoom1.getPlayers()[arcadeRoom1.findPlayerByID(idPlayerToFind)].rechargeCredits(Utils.readIntInRange(minCredits, maxCredits, "Introduzca créditos a recargar: ", "Ha introducido un número de créditos inválido, inténtelo de nuevo."));
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -95,7 +114,13 @@ public class View {
         } while (subOption != 0);
     }
 
-    private static void subMenuMachine(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, int maxYear, ArcadeMachine[] arcadeMachines) {
+    /**
+     *
+     * @param arcadeRoom1 Sala recreativa principal que contiene jugadores y máquinas recreativas.
+     * @param MAXCHARACTERSARCADEMACHINE Número máximo de carácteres de la máquina arcade.
+     * @param maxYear Número máximo del año en el que se creó la máquina.
+     */
+    private static void subMenuMachine(ArcadeRoom arcadeRoom1, int MAXCHARACTERSARCADEMACHINE, int maxYear) {
         int subOption = 0;
         do {
             System.out.println("Ha seleccionado Administrar máquina/s, por favor seleccione opción a elegir:");
@@ -133,7 +158,7 @@ public class View {
                 case 4:
                     try {
                         String nameMachineMaintenance = Utils.verifyString("Introduzca nombre de la máquina para realizar su mantenimiento:", MAXCHARACTERSARCADEMACHINE);
-                        arcadeMachines[arcadeRoom1.findMachineByName(nameMachineMaintenance)].modifyActivationMachine(true);
+                        arcadeRoom1.getArcadeMachines()[arcadeRoom1.findMachineByName(nameMachineMaintenance)].modifyActivationMachine(true);
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -178,7 +203,7 @@ public class View {
                 case 6:
                     try {
                         String nameMachineRanking = Utils.verifyString("Introduzca nombre máquina para ver el ranking: ", MAXCHARACTERSARCADEMACHINE);
-                        arcadeMachines[arcadeRoom1.findMachineByName(nameMachineRanking)].getRankingScore();
+                        arcadeRoom1.getArcadeMachines()[arcadeRoom1.findMachineByName(nameMachineRanking)].getRankingScore();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -190,5 +215,3 @@ public class View {
         } while (subOption != 0);
     }
 }
-
-

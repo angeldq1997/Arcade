@@ -75,12 +75,8 @@ public class ArcadeMachine {
         return this.pricePerPlay;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
     public boolean isActivated() {
-        return activated;
+        return this.activated;
     }
 
     public int getTimesPlayed() {
@@ -155,14 +151,14 @@ public class ArcadeMachine {
      */
     public void modifyActivationMachine(boolean state) throws Exception {
         if (state) {
-            if (this.activated) {
-                this.activated = false;
+            if (!this.activated) {
+                this.activated = true;
             } else {
                 throw new Exception("Error, la máquina no puede desactivarse ya está desactivada.");
             }
         } else {
-            if (!this.activated) {
-                this.activated = true;
+            if (this.activated) {
+                this.activated = false;
             } else {
                 throw new Exception("Error, la máquina no puede activarse ya está activada.");
             }
@@ -171,7 +167,6 @@ public class ArcadeMachine {
 
     /**
      * Función para añadir 1 al número de veces que se ha jugado una máquina.
-     *
      * @throws Exception Lanza excepción si la máquina está apagada.
      */
     public void addPlayTimeToMachine() throws Exception {
@@ -185,6 +180,12 @@ public class ArcadeMachine {
         }
     }
 
+    /**
+     * Función para guardar puntuaciones del jugador en un array colocando correctamente dependiendo de la conseguida.
+     * @param challenger Jugador que obtiene una puntuación concreta a comparar con las almacenadas.
+     * @param score Puntuación obtenida por el jugador indicado tras haber jugado una partida.
+     * @return Devuelve true si se ha almacenado correctamente y false si no se ha podido.
+     */
     public boolean storeScore(Player challenger, int score) {
         boolean foundScore = false;
         //TODO: Añadir para array mayor de 3: Player aux = new Player();
