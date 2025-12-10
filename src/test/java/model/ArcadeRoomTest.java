@@ -8,5 +8,6 @@ class ArcadeRoomTest {
 
     @Test
     void playMachine() {
+
     }
 }

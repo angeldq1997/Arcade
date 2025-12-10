@@ -109,6 +109,11 @@ public class Utils {
         return isInRange;
     }
 
+    /**
+     * Función que comprueba si hay un objeto nulo dentro de un array concreto.
+     * @param arrayToCheck Array a comprobar.
+     * @return True si tiene un nulo y false si no tiene ninguno.
+     */
     public static boolean isANullInArray(Object[] arrayToCheck){
         boolean thereIsAtLeastANull = false;
         for (int i = 0; i < arrayToCheck.length; i++) {

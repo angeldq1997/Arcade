@@ -133,7 +133,8 @@ public class View {
 
                 case 1:
                     try {
-                        arcadeRoom1.registerNewMachine("Introduzca nombre de la máquina a dar de alta.", "Introduzca nombre del género de la máquina.", MAXCHARACTERSARCADEMACHINE);
+
+                        arcadeRoom1.registerNewMachine();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }

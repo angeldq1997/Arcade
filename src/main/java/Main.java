@@ -1,7 +1,6 @@
 import model.ArcadeMachine;
 import model.ArcadeRoom;
 import model.Player;
-import utils.Utils;
 import utils.View;
 
 public class Main {

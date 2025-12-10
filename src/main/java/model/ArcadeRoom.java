@@ -46,9 +46,9 @@ public class ArcadeRoom {
 
     /**
      * Función para encontrar a un jugador a partir de su ID.
-     * @param idToFind ID a buscar del jugador en el array.
+     * @param idToFind id a buscar del jugador en el array.
      * @return La posición del jugador en el array.
-     * @throws Exception Lanza excepción si no se encuentra al jugador con la ID introducida.
+     * @throws Exception Lanza excepción si no se encuentra al jugador con la id que se ha introducido.
      */
     public int findPlayerByID(String idToFind) throws Exception {
         boolean isPlayerFound = false;
@@ -66,7 +66,7 @@ public class ArcadeRoom {
     }
 
     /**
-     * Elimina una máquina arcade poniendola a null, para ello la busca mediante su nombre escrito por el usuario.
+     * Elimina una máquina arcade poniéndola a null, para ello la busca mediante su nombre escrito por el usuario.
      * @param message Mensaje a introducir antes de pedir el nombre de la máquina arcade.
      * @param MAXCHARACTERSMACHINE Número máximo de caracteres que tiene una máquina.
      * @return True si se ha podido eliminar y false, si no se ha podido.
@@ -109,38 +109,66 @@ public class ArcadeRoom {
 
     /**
      * Función que permite ingresar un nuevo jugador al array.
-     * @param messageName
-     * @param messageId
-     * @param maxCharacterName
-     * @param maxCharacterId
-     * @return
-     * @throws Exception
+     * @param messageName Mensaje a mostrar antes de pedir un nombre de jugador.
+     * @param messageId Mensaje a mostrar antes de pedir un ID para el jugador.
+     * @param maxCharacterName Número máximo de caracteres para el nombre de un jugador.
+     * @param maxCharacterId Número máximo de caracteres para el ID de un jugador.
+     * @return True si se ha podido registrar y false si no ha podido completarse.
+     * @throws Exception Lanza excepción si no se ha podido registrar al jugador.
      */
     public boolean registerNewPlayer(String messageName, String messageId, int maxCharacterName, int maxCharacterId) throws Exception {
         boolean registerSuccessful = false;
-        for (int i = 0; i < this.players.length && !registerSuccessful; i++) {
-            if (players[i].getId() == "NONE" || players[i] == null) {
-                players[i].setName(Utils.verifyString(messageName, maxCharacterName));
-                players[i].setId(Utils.verifyString(messageId, maxCharacterId));
-                registerSuccessful = true;
+        if(Utils.isANullInArray(this.players)){
+            for (int i = 0; i < this.players.length && !registerSuccessful; i++) {
+                if (players[i].getId() == "NONE" || players[i] == null) {
+                    players[i].setName(Utils.verifyString(messageName, maxCharacterName));
+                    players[i].setId(Utils.verifyString(messageId, maxCharacterId));
+                    registerSuccessful = true;
+                }
             }
+        }else{
+            throw new Exception("Error, no se puede registrar a un jugador ya que el registro está completo.");
         }
         return registerSuccessful;
     }
 
-    public boolean registerNewMachine(String messageName, String messageGenre,int MAXCHARACTERNAMEMACHINE) throws Exception {
+    /**
+     * Función que registra una máquina nueva, pidiendo al usuario su nombre, género, entre otros datos.
+     * @param messageName Mensaje a mostrar antes de pedir nombre de la máquina.
+     * @param messageGenre Mensaje a mostrar antes de pedir nombre del género al que pertenece.
+     * @param MAXCHARACTERNAMEMACHINE Número de caracteres máximo para el nombre de la máquina arcade.
+     * @return True si ha registrado la máquina correctamente y false si no ha podido.
+     * @throws Exception Lanza excepción cuando está el array de máquinas completo.
+     */
+    public boolean registerNewMachine(String messageName, String messageGenre, String messageDeveloper, String messageReleasedYear, int MAXCHARACTERNAMEMACHINE, int minYear, int maxYear, int minPrice, int maxPrice) throws Exception {
         boolean registerSuccessful = false;
-        for (int i = 0; i < this.arcadeMachines.length; i++) {
-            if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
-                arcadeMachines[i].setName(Utils.verifyString(messageName, MAXCHARACTERNAMEMACHINE));
-                arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
-                arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
-                registerSuccessful = true;
+        if(Utils.isANullInArray(this.arcadeMachines)){
+            for (int i = 0; i < this.arcadeMachines.length; i++) {
+                if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
+                    arcadeMachines[i].setName(Utils.verifyString(messageName, MAXCHARACTERNAMEMACHINE));
+                    arcadeMachines[i].setGenre(Utils.verifyString(messageGenre, MAXCHARACTERNAMEMACHINE));
+                    arcadeMachines[i].setDeveloper(Utils.verifyString(messageDeveloper, MAXCHARACTERNAMEMACHINE));
+                    arcadeMachines[i].setReleasedYear(Utils.readIntInRange(minYear, maxYear, "Introduce año de lanzamiento: ", "Error, debe introducir un año de lanzamiento entre "+minYear+" y "+maxYear));
+                    arcadeMachines[i].setPricePerPlay(Utils.readIntInRange(minPrice, maxPrice, "Introduce número: ", "Error, has introducido un número incorrecto."));
+                    registerSuccessful = true;
+                }
             }
+        }else{
+            throw new Exception("Error, no se puede registrar ninguna máquina, el registro está completo.");
         }
         return registerSuccessful;
     }
 
+    /**
+     *
+     * @param messageSearchIdPlayer
+     * @param messageName
+     * @param messageId
+     * @param MAXCHARACTERSNAME
+     * @param MAXCHARACTERSID
+     * @return
+     * @throws Exception
+     */
     public boolean editPlayer(String messageSearchIdPlayer, String messageName, String messageId, int MAXCHARACTERSNAME, int MAXCHARACTERSID) throws Exception {
         int playerPosition = -1;
         boolean editedPlayer = false;
