@@ -50,7 +50,7 @@ public class ArcadeRoom {
      * Función para encontrar a un jugador a partir de su ID.
      * @param idToFind id a buscar del jugador en el array.
      * @return La posición del jugador en el array.
-     * @throws Exception Lanza excepción si no se encuentra al jugador con la id que se ha introducido.
+     * @throws Exception Lanza excepción si no se encuentra al jugador con la ID que se ha introducido.
      */
     public int findPlayerByID(String idToFind) throws Exception {
         boolean isPlayerFound = false;
@@ -117,9 +117,9 @@ public class ArcadeRoom {
      */
     public boolean registerNewPlayer(Player definedPlayer) throws Exception {
         boolean registerSuccessful = false;
-        if(Utils.isANullInArray(this.players)){
+        if(Utils.isANullInArray(this.players) && !this.existPlayer(definedPlayer)){
             for (int i = 0; i < this.players.length && !registerSuccessful; i++) {
-                if (players[i].getId() == "NONE" || players[i] == null) {
+                if (players[i] == null || players[i].getId() == "NONE") {
                     players[i] = definedPlayer;
                     registerSuccessful = true;
                 }
@@ -138,9 +138,9 @@ public class ArcadeRoom {
      */
     public boolean registerNewMachine(ArcadeMachine definedArcadeMachine) throws Exception {
         boolean registerSuccessful = false;
-        if(Utils.isANullInArray(this.arcadeMachines)){
+        if(Utils.isANullInArray(this.arcadeMachines) && !this.existMachine(definedArcadeMachine)){
             for (int i = 0; i < this.arcadeMachines.length; i++) {
-                if (arcadeMachines[i].getName() == "Máquina desconocida" || arcadeMachines[i] == null) {
+                if (arcadeMachines[i] == null || arcadeMachines[i].getName() == "Máquina desconocida") {
                     arcadeMachines[i] = definedArcadeMachine;
                     registerSuccessful = true;
                 }
@@ -214,7 +214,7 @@ public class ArcadeRoom {
         String machineList = "Las máquinas son: ";
         for (int i = 0; i < this.arcadeMachines.length; i++) {
             if(this.arcadeMachines[i] !=null) {
-                machineList += (this.arcadeMachines[i].getName() + " ");
+                machineList += (this.arcadeMachines[i].getName() + " | ");
             }
         }
         return machineList;
@@ -227,8 +227,10 @@ public class ArcadeRoom {
     public String listActiveMachines() {
         String activeMachineList = "Las máquinas activas son: ";
         for (int i = 0; i < this.arcadeMachines.length; i++) {
-            if (this.arcadeMachines[i].isActivated()) {
-                activeMachineList += (this.arcadeMachines[i].getName() + " | ");
+            if(arcadeMachines[i] != null) {
+                if (this.arcadeMachines[i].isActivated()) {
+                    activeMachineList += (this.arcadeMachines[i].getName() + " | ");
+                }
             }
         }
         return activeMachineList;

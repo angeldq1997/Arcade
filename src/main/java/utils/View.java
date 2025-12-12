@@ -16,7 +16,7 @@ public class View {
      * @param MAXCREDITS Créditos máximos que puede ingresar un jugador.
      * @param MINCREDITS Créditos mínimos que debe ingresar el jugador.
      */
-    public static void principalMenu(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int MAXCREDITS, int MINCREDITS, int MINPRICE, int MAXPRICE) {
+    public static void principalMenu(ArcadeRoom arcadeRoom1, int MAXCHARACTERSPLAYER, int MAXCHARACTERSID, int MAXCHARACTERSARCADEMACHINE, int MAXYEAR, int MAXSCORE, int MINCREDITS, int MAXCREDITS, int MINPRICE, int MAXPRICE) {
         int option = 0;
         do {
             System.out.println("\n--- MENÚ RECREATIVAS ARCADIA ---\n\t0. SALIR.\n\t1. JUGAR UNA PARTIDA.\n\t2. ADMINISTRAR JUGADOR/ES.\n\t3. ADMINISTRAR MÁQUINA/S.\n\t4. ESTADÍSTICAS Y LISTADO.");
@@ -144,10 +144,10 @@ public class View {
                 case 2:
                     try {
                         arcadeRoom1.removeMachine("Seleccione nombre de máquina a dar de baja: ", MAXCHARACTERSARCADEMACHINE);
+                        System.out.println("Se ha borrado satisfactoriamente la máquina seleccionada.");
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
-                    System.out.println("Se ha borrado satisfactoriamente la máquina seleccionada.");
                     break;
 
                 case 3:
@@ -166,6 +166,7 @@ public class View {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
+                    break;
                 default:
                     System.out.println("Error, ha seleccionado una opción incorrecta, inténtelo de nuevo.");
             }

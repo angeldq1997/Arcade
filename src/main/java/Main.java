@@ -47,7 +47,7 @@ public class Main {
         ArcadeMachine arcadeMachine1 = new ArcadeMachine("Space Invaders", "Shoot' em Up", PRICEOLDMACHINES, 10, ranking, bestPlayers,1978, "Taito");
         ArcadeMachine arcadeMachine2 = new ArcadeMachine("Street Fighter II", "Lucha", VERSUSORCOOPPRICE, 20, ranking,  bestPlayers,1991, "Capcom");
         ArcadeMachine arcadeMachine3 = new ArcadeMachine("Metal Slug", "Run and gun", VERSUSORCOOPPRICE, 15, ranking,  bestPlayers,1996, "Nazca Corporation");
-        ArcadeMachine arcadeMachine4 = new ArcadeMachine("Pac-Man", "Laberinto", DELUXEPRICE, 50, ranking3,  bestPlayers,1980, "Namco");
+        ArcadeMachine arcadeMachine4 = new ArcadeMachine("Pac-Man", "Laberinto", DELUXEPRICE, 99, ranking3,  bestPlayers,1980, "Namco");
         ArcadeMachine arcadeMachine5 = new ArcadeMachine("Parodius", "Shoot' em Up", STANDARDPRICE, 5, ranking2,  bestPlayers,1990,"Konami");
         ArcadeMachine arcadeMachine6 = new ArcadeMachine("Donkey Kong", "Plataformas", DELUXEPRICE, 12, ranking2,  bestPlayers,1981,"Nintendo R&D1");
         ArcadeMachine arcadeMachine7 = new ArcadeMachine("Breakout", "Acción", LOWPRICE, 0, ranking2,  bestPlayers,1976, "Atari");

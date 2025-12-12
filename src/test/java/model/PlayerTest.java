@@ -1,6 +1,7 @@
 package model;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.Utils;
@@ -10,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     // Definimos el objeto para usarlo en todos los tests
-    static Player testPlayer = new Player("A", "1", 0, 0);
+    private Player testPlayer;
 
-    @BeforeAll
-    public static void setUpClass(){
-        Player testPlayer = new Player();
+    @BeforeEach
+    public void setUpClass(){
+        Player testPlayer = new Player("A", "1", 0, 0);
     }
 
     @Test

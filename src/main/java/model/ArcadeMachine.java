@@ -87,7 +87,7 @@ public class ArcadeMachine {
         String rankingScore = "Ranking de "+ this.getName() +": ";
         for (int i = 0; i < this.rankingScore.length; i++) {
             if(this.rankingScore[i] != 0 && this.bestPlayers[i] != null){
-                rankingScore += this.rankingScore[i] + " por: "+ this.bestPlayers[i];
+                rankingScore += this.rankingScore[i] + " por: "+ this.bestPlayers[i].getName() + " | ";
             }
         }
         return rankingScore;
@@ -137,15 +137,14 @@ public class ArcadeMachine {
     @Override
     public String toString() {
         return "Máquina arcade" +
-                "Nombre = " + this.name +
+                " nombre = " + this.name +
                 ", género = " + this.genre +
                 ", precio para jugar = " + this.pricePerPlay +
                 ", está activa = " + this.activated +
                 ", veces que se ha jugado = " + this.timesPlayed +
                 ", mejores puntuaciones = " + this.getRankingScore() +
-                ", mejores jugadores = " + this.getBestPlayers() +
                 ", año de lanzamiento = " + this.releasedYear +
-                "y desarrollador/a = " + this.developer + ".";
+                " y desarrollador/a = " + this.developer + ".";
     }
 
     /**
@@ -154,14 +153,14 @@ public class ArcadeMachine {
      */
     public void modifyActivationMachine(boolean state) throws Exception {
         if (state) {
-            if (!this.activated) {
-                this.activated = true;
+            if (this.activated) {
+                this.activated = false;
             } else {
                 throw new Exception("Error, la máquina no puede desactivarse ya está desactivada.");
             }
         } else {
-            if (this.activated) {
-                this.activated = false;
+            if (!this.activated) {
+                this.activated = true;
             } else {
                 throw new Exception("Error, la máquina no puede activarse ya está activada.");
             }
@@ -193,19 +192,19 @@ public class ArcadeMachine {
         boolean foundScore = false;
         //TODO: Añadir para array mayor de 3: Player aux = new Player();
         for (int i = 0; i < 3; i++) {
-            if (!foundScore && score > rankingScore[0]) {
-                score = rankingScore[0];
+            if (!foundScore && score > this.rankingScore[0]) {
+                this.rankingScore[0] = score;
                 foundScore = true;
 
-            } else if (!foundScore && score > rankingScore[1]) {
-                rankingScore[1] = rankingScore[2];
+            } else if (!foundScore && score > this.rankingScore[1]) {
+                this.rankingScore[1] = this.rankingScore[2];
                 this.bestPlayers[1] = this.bestPlayers[2];
-                score = rankingScore[1];
+                rankingScore[1] = score;
                 this.bestPlayers[1] = challenger;
                 foundScore = true;
 
-            } else if (!foundScore && score > rankingScore[2]) {
-                score = rankingScore[2];
+            } else if (!foundScore && score > this.rankingScore[2]) {
+                this.rankingScore[2] = score;
                 foundScore = true;
             }
         }

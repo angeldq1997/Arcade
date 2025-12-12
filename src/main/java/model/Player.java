@@ -81,6 +81,7 @@ public class Player {
 
     /**
      * Función para recargar créditos al jugador.
+     * @param creditsToRecharge Créditos a recargar.
      */
     public void rechargeCredits(int creditsToRecharge) throws Exception {
         if(creditsToRecharge>0){
@@ -99,9 +100,8 @@ public class Player {
 
     /**
      * Función que gasta créditos para jugar una partida.
-     *
-     * @param costArcadeMachine
-     * @throws Exception
+     * @param costArcadeMachine Precio de la máquina.
+     * @throws Exception Lanza excepción si no tiene suficientes créditos y que no haya negativos.
      */
     public boolean spendCredits(int costArcadeMachine) throws Exception {
         boolean canPay = false;
